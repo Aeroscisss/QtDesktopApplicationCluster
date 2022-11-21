@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Abstract">
+      <UniqueIdentifier>{ae4bcbfb-9c29-4522-9ff0-d80d242e8903}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Abstract">
+      <UniqueIdentifier>{ea6b9ce8-3679-4566-bf8b-7b6ebd5a46c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CustomQWidget">
+      <UniqueIdentifier>{f0f03f3c-3c54-4529-9912-c078b5ea6790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CustomQWidget">
+      <UniqueIdentifier>{ae48cff4-e739-4a78-be66-a0401f807bf9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="resource.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\CustomQMainWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\CustomQApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\CustomQObject\CustomAbstractQMainWindow.cpp">
+      <Filter>Source Files\Abstract</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\CustomQObject\CustomAbstractQWidget.cpp">
+      <Filter>Source Files\Abstract</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\CustomQObject\CustomAbstractQApp.cpp">
+      <Filter>Source Files\Abstract</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\CustomQWidget\CustomMsgBrowserWidget.cpp">
+      <Filter>Source Files\CustomQWidget</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\CustomQMainWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\CustomQApp.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="..\src\CustomQObject\CustomAbstractQWidget.h">
+      <Filter>Header Files\Abstract</Filter>
+    </QtMoc>
+    <QtMoc Include="..\src\CustomQObject\CustomAbstractQApp.h">
+      <Filter>Header Files\Abstract</Filter>
+    </QtMoc>
+    <QtMoc Include="..\src\CustomQObject\CustomAbstractQMainWindow.h">
+      <Filter>Header Files\Abstract</Filter>
+    </QtMoc>
+    <QtMoc Include="..\src\CustomQWidget\CustomMsgBrowserWidget.h">
+      <Filter>Header Files\CustomQWidget</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="..\src\LibHeaderFileAutoSyncUpdate\CustomQMainWindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="..\src\CustomQWidget\CustomMsgBrowserWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+</Project>
