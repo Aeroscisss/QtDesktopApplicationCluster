@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QDebug>
 #include <vector>
 #include <mutex>
 

@@ -8,7 +8,7 @@
 #ifndef CUSTOM_MSG_BROWSER_WIDGET_H
 #define CUSTOM_MSG_BROWSER_WIDGET_H
 
-#include "CustomAbstractQWidget.h"
+#include "CustomQObject/CustomAbstractQWidget.h"
 #include "ui_CustomMsgBrowserWidget.h"
 
 class CustomMsgBrowserWidget : public CustomAbstractQWidget

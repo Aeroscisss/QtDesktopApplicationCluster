@@ -14,4 +14,6 @@ public:
 private:
 	bool initModule()override;
 	bool initUi()override;
+	void connectSigs()override;
+private:
 };

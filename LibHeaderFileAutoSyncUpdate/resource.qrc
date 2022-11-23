@@ -1,4 +1,6 @@
 <RCC>
-    <qresource prefix="CustomQMainWindow">
+    <qresource prefix="/">
+        <file>assets/icon/HeaderAsync128.ico</file>
+        <file>assets/icon/HeaderAsync1024.png</file>
     </qresource>
 </RCC>

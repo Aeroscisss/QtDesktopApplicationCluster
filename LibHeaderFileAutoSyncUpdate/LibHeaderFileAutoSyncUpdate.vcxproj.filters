@@ -33,6 +33,21 @@
     <Filter Include="Source Files\CustomQWidget">
       <UniqueIdentifier>{ae48cff4-e739-4a78-be66-a0401f807bf9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Module">
+      <UniqueIdentifier>{189e8959-54ac-4358-8182-f474c3d86dad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Module">
+      <UniqueIdentifier>{2f4c834b-a490-4627-af38-2076380d3bd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Window">
+      <UniqueIdentifier>{0468cb4d-63d6-48f4-b357-9edd2a98cad9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Mid">
+      <UniqueIdentifier>{81d89e05-4462-4171-bdde-14b07cf780be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Midterm">
+      <UniqueIdentifier>{7aec4d4e-9da9-41ac-9175-7baa737c4b03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="resource.qrc">
@@ -40,9 +55,6 @@
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\CustomQMainWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -60,6 +72,15 @@
     </ClCompile>
     <ClCompile Include="..\src\CustomQWidget\CustomMsgBrowserWidget.cpp">
       <Filter>Source Files\CustomQWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\GlobalMessageRepost.cpp">
+      <Filter>Source Files\Module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\CustomQMainWindow.cpp">
+      <Filter>Source Files\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingManager.cpp">
+      <Filter>Source Files\Module</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +101,12 @@
     </QtMoc>
     <QtMoc Include="..\src\CustomQWidget\CustomMsgBrowserWidget.h">
       <Filter>Header Files\CustomQWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\GlobalMessageRepost.h">
+      <Filter>Header Files\Module</Filter>
+    </QtMoc>
+    <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingManager.h">
+      <Filter>Header Files\Module</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

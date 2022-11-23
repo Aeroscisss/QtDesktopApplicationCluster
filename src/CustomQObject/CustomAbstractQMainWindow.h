@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QDebug>
 
 class CustomAbstractQMainWindow : public QMainWindow
 {

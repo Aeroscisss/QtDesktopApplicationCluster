@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "CustomQObject/CustomAbstractQWidget.h"
 #include "CustomMsgBrowserWidget.h"
 #include <QTime>
 CustomMsgBrowserWidget::CustomMsgBrowserWidget(QWidget *parent)

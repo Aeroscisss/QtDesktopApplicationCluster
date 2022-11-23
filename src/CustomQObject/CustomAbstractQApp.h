@@ -12,10 +12,13 @@ public:
 	CustomAbstractQApp(int& argc, char** argv);
 	~CustomAbstractQApp();
 	virtual bool initialize();
+	virtual bool release();
 public:
-	QPointer<CustomAbstractQMainWindow> mainWindow=nullptr;
 protected:
 	virtual bool initModule();
 	virtual bool initUi();
+	virtual void connectSigs();
+	struct AppModule;
+	struct AppUi;
 private:
 };

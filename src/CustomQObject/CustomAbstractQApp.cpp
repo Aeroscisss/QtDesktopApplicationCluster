@@ -12,17 +12,28 @@ bool CustomAbstractQApp::initialize()
 {
 	if(!initModule())
 		return false;
-	if (!initUi())
+	if (!initUi()) {
 		return false;
+	}
+	return true;
+}
+
+bool CustomAbstractQApp::release()
+{
 	return true;
 }
 
 bool CustomAbstractQApp::initModule()
 {
-	return false;
+	return true;
 }
 
 bool CustomAbstractQApp::initUi()
 {
-	return false;
+	return true;
+}
+
+void CustomAbstractQApp::connectSigs()
+{
+
 }
