@@ -23,7 +23,7 @@ void CustomQMainWindow::connectSigs()
 }
 void CustomQMainWindow::on_action_createNewPattern_triggered() {
 	bool ok=false;
-	// ��ȡ�ַ���
+	// »ñÈ¡×Ö·û´®
 	QString string = QInputDialog::getText(this, tr("Input pattern name"), tr("Input pattern:"), QLineEdit::Normal, tr("New Pattern"), &ok);
     if (ok) {
         QString msg = QString("New Pattern Name:[")  + string + QString("]");

@@ -13,6 +13,7 @@ public:
 	~CustomAbstractQApp();
 	virtual bool initialize();
 	virtual bool release();
+	virtual void showIntroWindow();
 public:
 protected:
 	virtual bool initModule();

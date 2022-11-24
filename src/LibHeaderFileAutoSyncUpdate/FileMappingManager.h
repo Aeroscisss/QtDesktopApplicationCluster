@@ -4,12 +4,9 @@ class FileMappingManager:public QObject
 {
 	Q_OBJECT
 public:
-	FileMappingManager& Instance();
+	static FileMappingManager& Instance();
 	~FileMappingManager();
 protected:
-
 private:
 	FileMappingManager();
-private:
-	
 };

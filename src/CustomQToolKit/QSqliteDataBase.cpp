@@ -18,7 +18,7 @@
 //    {ConstraintType::Check,"CHECK"}
 //};
 
-//¹¹Ôìº¯Êı£º²ÎÊıÎªÁ¬½ÓÃû³Æ£¬Ö÷»úÃû£¬ÓÃ»§Ãû£¬ÃÜÂë
+//æ„é€ å‡½æ•°ï¼šå‚æ•°ä¸ºè¿æ¥åç§°ï¼Œä¸»æœºåï¼Œç”¨æˆ·åï¼Œå¯†ç 
 QSqliteDataBase::QSqliteDataBase(QString connectionName, QString fileName)
 {
     if (QSqlDatabase::contains(connectionName))
@@ -29,7 +29,7 @@ QSqliteDataBase::QSqliteDataBase(QString connectionName, QString fileName)
     _query = std::unique_ptr<QSqlQuery>(new QSqlQuery(_database));
     _database.setDatabaseName(_databaseFilePath);
 }
-//Îö¹¹º¯Êı£¬¹Ø±ÕÊı¾İ¿â
+//ææ„å‡½æ•°ï¼Œå…³é—­æ•°æ®åº“
 QSqliteDataBase::~QSqliteDataBase()
 {
     closeDataBase();
@@ -38,34 +38,34 @@ QSqlDatabase* QSqliteDataBase::getQSqlDatabase()
 {
     return &_database;
 }
-//´ò¿ªÊı¾İ¿â£º±¾º¯ÊıÄ¬ÈÏ´ò¿ªÄÚ¹¹QSqlDataBase
+//æ‰“å¼€æ•°æ®åº“ï¼šæœ¬å‡½æ•°é»˜è®¤æ‰“å¼€å†…æ„QSqlDataBase
 bool QSqliteDataBase::openDataBase()
 {
     std::lock_guard<std::mutex>locker(mutex_database);
     if (!_database.open()){
         _error = _database.lastError();
         DevelopLog::error("fail open sqlite database " + _database.connectionName().toStdString()+" error:"+_error.databaseText().toStdString(), DevelopLog::DevelopLogDst::GeneralDailyFile, true);
-        QMessageBox::warning(nullptr, QObject::tr("Warning"), _database.lastError().text());//ÎŞ·¨´ò¿ªÊı¾İ¿â£¬ÏòÖ÷½çÃæ·¢ËÍ´íÎóĞÅÏ¢
-        return false;//´ò¿ªÊ§°Ü
+        QMessageBox::warning(nullptr, QObject::tr("Warning"), _database.lastError().text());//æ— æ³•æ‰“å¼€æ•°æ®åº“ï¼Œå‘ä¸»ç•Œé¢å‘é€é”™è¯¯ä¿¡æ¯
+        return false;//æ‰“å¼€å¤±è´¥
     }
     else
         _databaseOpened = true;
-    return true;//´ò¿ª³É¹¦
+    return true;//æ‰“å¼€æˆåŠŸ
 }
-//»ñÈ¡Êı¾İ¿âÊÇ·ñÒÑ¾­´ò¿ª
+//è·å–æ•°æ®åº“æ˜¯å¦å·²ç»æ‰“å¼€
 bool QSqliteDataBase::isOpened()
 {
     return _databaseOpened;
 }
 
-//¹Ø±ÕÊı¾İ¿â£¬´Ëº¯ÊıÄ¬ÈÏ¹Ø±Õ±¾ÀàÄÚµÄÄÚ¹¹QSqlDataBase
+//å…³é—­æ•°æ®åº“ï¼Œæ­¤å‡½æ•°é»˜è®¤å…³é—­æœ¬ç±»å†…çš„å†…æ„QSqlDataBase
 void  QSqliteDataBase::closeDataBase()
 {
     std::lock_guard<std::mutex>locker(mutex_database);
     _database.close();
     _databaseOpened = false;
 }
-//ÊäÈë±í¸ñÃû×Ö£¬ÔÚdatabase²éÕÒ±í¸ñÊÇ·ñ´æÔÚ£¬·µ»ØboolÖµ
+//è¾“å…¥è¡¨æ ¼åå­—ï¼Œåœ¨databaseæŸ¥æ‰¾è¡¨æ ¼æ˜¯å¦å­˜åœ¨ï¼Œè¿”å›boolå€¼
 bool QSqliteDataBase::checkTableExist(QString tableName)
 {
     QStringList a=_database.tables();
@@ -73,7 +73,7 @@ bool QSqliteDataBase::checkTableExist(QString tableName)
         return false;
     std::lock_guard<std::mutex>locker(mutex_database);
     QString sql;
-    sql = "SELECT count(*) FROM sqlite_master WHERE type = 'table' AND name ='" + tableName + "'";//ÊÇ·ñÒÑ¾­´æÔÚ±ícar_bayonet_info
+    sql = "SELECT count(*) FROM sqlite_master WHERE type = 'table' AND name ='" + tableName + "'";//æ˜¯å¦å·²ç»å­˜åœ¨è¡¨car_bayonet_info
     _query->prepare(sql);
     sql += ";";
     if (!_query->exec())
@@ -81,34 +81,34 @@ bool QSqliteDataBase::checkTableExist(QString tableName)
     return true;
 }
 
-//É¾³ı±í¸ñ£¬´Ëº¯Êı¸ù¾İ¸ø¶¨µÄ±í¸ñÃû³ÆµÄQStringÉ¾³ıµô¶ÔÓ¦µÄ±í¸ñ
-bool QSqliteDataBase::deleteTable(QString tableName)//É¾³ı±í¸ñ¡¾finished¡¿
+//åˆ é™¤è¡¨æ ¼ï¼Œæ­¤å‡½æ•°æ ¹æ®ç»™å®šçš„è¡¨æ ¼åç§°çš„QStringåˆ é™¤æ‰å¯¹åº”çš„è¡¨æ ¼
+bool QSqliteDataBase::deleteTable(QString tableName)//åˆ é™¤è¡¨æ ¼ã€finishedã€‘
 {
 	if (!isOpened())
 		return false; 
     std::lock_guard<std::mutex>locker(mutex_database);
-    //¼ì²â±í¸ñ´æÔÚ£¬²»´æÔÚ¾ÍĞ´Èë´íÎóĞÅÏ¢²¢·µ»Ø
+    //æ£€æµ‹è¡¨æ ¼å­˜åœ¨ï¼Œä¸å­˜åœ¨å°±å†™å…¥é”™è¯¯ä¿¡æ¯å¹¶è¿”å›
     if (checkTableExist(tableName)){
-        QString error = QString::fromUtf8("É¾³ı±í¸ñ") + tableName + QString::fromUtf8("Ê§°Ü£¬±í¸ñ²»´æÔÚ»ò²»ÍêÕû");
+        QString error = QString::fromUtf8("åˆ é™¤è¡¨æ ¼") + tableName + QString::fromUtf8("å¤±è´¥ï¼Œè¡¨æ ¼ä¸å­˜åœ¨æˆ–ä¸å®Œæ•´");
         _error = error;
-        return false;//Ö´ĞĞÊ§°Ü
+        return false;//æ‰§è¡Œå¤±è´¥
     }
-    //±í¸ñ´æÔÚ£¬³¢ÊÔ½øĞĞ±í¸ñÉ¾³ı²Ù×÷
+    //è¡¨æ ¼å­˜åœ¨ï¼Œå°è¯•è¿›è¡Œè¡¨æ ¼åˆ é™¤æ“ä½œ
     QString sql;
     sql = "DROP TABLE " + tableName;
     sql += ";";
     _query->prepare(sql);
     if (_query->exec())
-        return true;//Ö´ĞĞ³É¹¦
+        return true;//æ‰§è¡ŒæˆåŠŸ
     else{
-        QString error = QString::fromUtf8("É¾³ı±í¸ñ") + tableName + QString::fromUtf8("Ê§°Ü£¬Ô­ÒòÎ´Öª");
+        QString error = QString::fromUtf8("åˆ é™¤è¡¨æ ¼") + tableName + QString::fromUtf8("å¤±è´¥ï¼ŒåŸå› æœªçŸ¥");
         _error = error;
         _error = _database.lastError();
-        return false;//Ö´ĞĞÊ§°Ü
+        return false;//æ‰§è¡Œå¤±è´¥
     }
 }
 
-//¡¾finished¡¿´´½¨±í¸ñ£¬¸Ãº¯Êı¸øÄÚ¹¹µÄQSqlDataBaseÀàÌí¼ÓÒ»¸ö±í¸ñ¡£QmapÀàµÄtabeldataÄÚµÄpairµÄ¸ñÊ½ÎªÃû³Æ-Êı¾İÀàĞÍ
+//ã€finishedã€‘åˆ›å»ºè¡¨æ ¼ï¼Œè¯¥å‡½æ•°ç»™å†…æ„çš„QSqlDataBaseç±»æ·»åŠ ä¸€ä¸ªè¡¨æ ¼ã€‚Qmapç±»çš„tabeldataå†…çš„pairçš„æ ¼å¼ä¸ºåç§°-æ•°æ®ç±»å‹
 bool  QSqliteDataBase::createTable(QString tableName, QMap<QString, QString> tableData)
 {
 	if (!isOpened())
@@ -128,14 +128,14 @@ bool  QSqliteDataBase::createTable(QString tableName, QMap<QString, QString> tab
     int result = _query->exec();
 	if (!result) {
 		_error = _query->lastError();
-		errorReport("QSqliteDataBase::createTable³ö´í,´íÎó´úÂë:" + std::to_string((int)_error.type()));
+		errorReport("QSqliteDataBase::createTableå‡ºé”™,é”™è¯¯ä»£ç :" + std::to_string((int)_error.type()));
 	}
     return  result;
 }
 
 
-//¡¾finished¡¿ÏòÖ¸¶¨µÄtableÀïÃæÌí¼ÓÊı¾İ£¬ÊäÈë±í¸ñµÄÃû×Ö
-bool  QSqliteDataBase::addData(QString tableName, QMap<QString, QString> tableData)//Ôö¼ÓÊı¾İ
+//ã€finishedã€‘å‘æŒ‡å®šçš„tableé‡Œé¢æ·»åŠ æ•°æ®ï¼Œè¾“å…¥è¡¨æ ¼çš„åå­—
+bool  QSqliteDataBase::addData(QString tableName, QMap<QString, QString> tableData)//å¢åŠ æ•°æ®
 {
 	if (!isOpened())
 		return false;
@@ -158,14 +158,14 @@ bool  QSqliteDataBase::addData(QString tableName, QMap<QString, QString> tableDa
     int result = _query->exec();
     if (!result){
         _error = _query->lastError();
-        errorReport("QSqliteDataBase::addData³ö´í,´íÎó´úÂë:"+std::to_string((int)_error.type()));
+        errorReport("QSqliteDataBase::addDataå‡ºé”™,é”™è¯¯ä»£ç :"+std::to_string((int)_error.type()));
     }
     return true;
 }
 
 
-//¡¾finished¡¿ÔÚÖ¸¶¨µÄtableÀïÃæÉ¾³ıÊı¾İ£¬ÊäÈë±í¸ñµÄÃû×ÖºÍ¼ÇÂ¼
-bool QSqliteDataBase::deleteData(QString tableName, QMap<QString, QString> where)//É¾³ıÒ»Ìõ¼ÇÂ¼
+//ã€finishedã€‘åœ¨æŒ‡å®šçš„tableé‡Œé¢åˆ é™¤æ•°æ®ï¼Œè¾“å…¥è¡¨æ ¼çš„åå­—å’Œè®°å½•
+bool QSqliteDataBase::deleteData(QString tableName, QMap<QString, QString> where)//åˆ é™¤ä¸€æ¡è®°å½•
 {
 	if (!isOpened())
 		return false;
@@ -184,12 +184,12 @@ bool QSqliteDataBase::deleteData(QString tableName, QMap<QString, QString> where
     int result = _query->exec();
 	if (!result) {
 		_error = _query->lastError();
-		errorReport("QSqliteDataBase::deleteData³ö´í,´íÎó´úÂë:" + std::to_string((int)_error.type()));
+		errorReport("QSqliteDataBase::deleteDataå‡ºé”™,é”™è¯¯ä»£ç :" + std::to_string((int)_error.type()));
 	}
     return result;
 }
 
-//·¢ËÍÊı¾İ¿âÓï¾ä
+//å‘é€æ•°æ®åº“è¯­å¥
 bool QSqliteDataBase::sendDatabaseQuery(QString _query_sql)
 {
 	if (!isOpened())
@@ -207,12 +207,12 @@ bool QSqliteDataBase::sendDatabaseQuery(QString _query_sql)
     int result = _query->exec();
 	if (!result) {
 		_error = _query->lastError();
-		errorReport("QSqliteDataBase::sendDatabaseQuery³ö´í,´íÎó´úÂë:" + std::to_string((int)_error.type()));
+		errorReport("QSqliteDataBase::sendDatabaseQueryå‡ºé”™,é”™è¯¯ä»£ç :" + std::to_string((int)_error.type()));
 	}
     return result;
 }
 
-//¸üĞÂÊı¾İ
+//æ›´æ–°æ•°æ®
 bool QSqliteDataBase::updateData(QString tableName, QMap<QString, QString> where, QMap<QString, QString> data)
 {
 	if (!isOpened())
@@ -237,12 +237,12 @@ bool QSqliteDataBase::updateData(QString tableName, QMap<QString, QString> where
     int result = _query->exec();
 	if (!result) {
 		_error = _query->lastError();
-		errorReport("QSqliteDataBase::updateData³ö´í,´íÎó´úÂë:" + std::to_string((int)_error.type()));
+		errorReport("QSqliteDataBase::updateDataå‡ºé”™,é”™è¯¯ä»£ç :" + std::to_string((int)_error.type()));
 	}
     return result;
 }
 
-//²éÕÒ
+//æŸ¥æ‰¾
 bool QSqliteDataBase::find(QString tableName, QList<QString> key, QMap<QString, QString> where, QList<QList<QString>>* row)
 {
 	if (!isOpened())
@@ -276,7 +276,7 @@ bool QSqliteDataBase::find(QString tableName, QList<QString> key, QMap<QString, 
     }
     return false;
 }
-//²éÕÒËùÓĞ
+//æŸ¥æ‰¾æ‰€æœ‰
 bool QSqliteDataBase::find(QString tableName, QList<QString> key, QList<QList<QString>>* row)
 {
 	if (!isOpened())

@@ -16,7 +16,7 @@
 class QJsonIO
 {
 public:
-	//实例公用Json接口
+	//瀹炰緥鍏敤Json鎺ュ彛
 	static bool readJsonFile(QString filePath,QJsonDocument &doc);
 	static bool convertJsonDocToObj(QJsonDocument doc, QJsonObject& obj);
 	static bool writeJsonFile(QString filePath, QJsonDocument file);

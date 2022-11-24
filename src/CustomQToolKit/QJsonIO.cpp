@@ -7,10 +7,10 @@
 #include <QVariant>
 #include <iostream>
 #include "QJsonIO.h"
-//º¯Êı£º¶ÈÓ²ÅÌµÄJsonÎÄ¼ş²¢¶ÁÈëJsonDoc¡¢JsonObj
+//å‡½æ•°ï¼šåº¦ç¡¬ç›˜çš„Jsonæ–‡ä»¶å¹¶è¯»å…¥JsonDocã€JsonObj
 bool QJsonIO::readJsonFile(QString filePath, QJsonDocument &outDoc)
 {
-	//Ê¹ÓÃQFile³Ğ½ÓfilepathµÄÎÄ¼ş
+	//ä½¿ç”¨QFileæ‰¿æ¥filepathçš„æ–‡ä»¶
 	QFile rawJsonFile(filePath);
 	if (!rawJsonFile.open(QIODevice::ReadOnly))
 	{
@@ -19,7 +19,7 @@ bool QJsonIO::readJsonFile(QString filePath, QJsonDocument &outDoc)
 	QJsonParseError jsonParserError;
 	outDoc = QJsonDocument::fromJson(rawJsonFile.readAll(), &jsonParserError);
 	if (outDoc.isNull() || (jsonParserError.error != QJsonParseError::NoError)){
-		return false;// ÎÄµµ¿Õ || jsonParserError½âÎöÓĞ´íÎó£¬½âÎöÊ§°Ü
+		return false;// æ–‡æ¡£ç©º || jsonParserErrorè§£ææœ‰é”™è¯¯ï¼Œè§£æå¤±è´¥
 	}
 	rawJsonFile.close();
 	return true;
@@ -31,10 +31,10 @@ bool QJsonIO::convertJsonDocToObj(QJsonDocument doc, QJsonObject& obj)
 	obj = doc.object();
 	return true;
 }
-//º¯Êı£ºĞ´QJsonDocµ½Ó²ÅÌ
+//å‡½æ•°ï¼šå†™QJsonDocåˆ°ç¡¬ç›˜
 bool QJsonIO::writeJsonFile(QString filePath, QJsonDocument jsonDoc)
 {
-	//Èç¹û±¾ÉíÎÄ¼ş´æÔÚ£¬ÔòÇå¿Õ±¾ÉíµÄjsonÄÚÈİ£¬Èç¹û²»Çå¿Õ±¾ÉíµÄÎÄ¼ş»áµ¼ÖÂĞ´Èë´íÎ»
+	//å¦‚æœæœ¬èº«æ–‡ä»¶å­˜åœ¨ï¼Œåˆ™æ¸…ç©ºæœ¬èº«çš„jsonå†…å®¹ï¼Œå¦‚æœä¸æ¸…ç©ºæœ¬èº«çš„æ–‡ä»¶ä¼šå¯¼è‡´å†™å…¥é”™ä½
 	QFile rawJsonFile(filePath);
 	if (rawJsonFile.exists())
 	{
@@ -46,7 +46,7 @@ bool QJsonIO::writeJsonFile(QString filePath, QJsonDocument jsonDoc)
 	}
 	else
 		rawJsonFile.open(QIODevice::WriteOnly | QIODevice::Text);
-	// ½«jsonÒÔÎÄ±¾ĞÎÊ½Ğ´ÈëÎÄ¼ş²¢¹Ø±ÕÎÄ¼ş¡£
+	// å°†jsonä»¥æ–‡æœ¬å½¢å¼å†™å…¥æ–‡ä»¶å¹¶å…³é—­æ–‡ä»¶ã€‚
 	rawJsonFile.write(jsonDoc.toJson());
 	std::cout << "writeJsonFile, filePath" << filePath.toStdString() << std::endl;
 	rawJsonFile.close();

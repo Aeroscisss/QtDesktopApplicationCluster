@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
     }
     else {
 		qDebug() << "app is running";
+        app.showIntroWindow();
 		return app.exec();
     }
 }

@@ -105,6 +105,11 @@
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\CustomQApp.cpp" />
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\CustomQMainWindow.cpp" />
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingManager.cpp" />
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingPattern.cpp" />
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingRule.cpp" />
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingRuleParser.cpp" />
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingTask.cpp" />
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingUnit.cpp" />
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\GlobalMessageRepost.cpp" />
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\main.cpp" />
   </ItemGroup>
@@ -135,6 +140,13 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingPattern.h" />
+    <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingRule.h" />
+    <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingRuleParser.h" />
+    <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingTask.h" />
+    <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingUnit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

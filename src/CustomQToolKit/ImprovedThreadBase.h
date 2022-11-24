@@ -24,9 +24,9 @@ public:
 	};
 	enum class ThreadState
 	{
-		Thread_Stoped,     ///<Í£Ö¹×´Ì¬£¬°üÀ¨´ÓÎ´Æô¶¯¹ýºÍÆô¶¯ºó±»Í£Ö¹
-		Thread_Running,    ///<ÔËÐÐ×´Ì¬
-		Thread_Paused      ///<ÔÝÍ£×´Ì¬
+		Thread_Stoped,     ///<åœæ­¢çŠ¶æ€ï¼ŒåŒ…æ‹¬ä»Žæœªå¯åŠ¨è¿‡å’Œå¯åŠ¨åŽè¢«åœæ­¢
+		Thread_Running,    ///<è¿è¡ŒçŠ¶æ€
+		Thread_Paused      ///<æš‚åœçŠ¶æ€
 	};
 	ImprovedThreadBase() {}
 	~ImprovedThreadBase(){}
@@ -35,7 +35,7 @@ public:
 public:
 	QString threadName;
 	QThread thread;
-	//Ïß³ÌÏà¹Ø
+	//çº¿ç¨‹ç›¸å…³
 	QMutex mutex_pauseThread;
 	QWaitCondition cond_pauseThread;
 	std::atomic_bool pauseFlag = false;

@@ -18,39 +18,39 @@
 class QSqliteDataBase 
 {
     /// <summary>
-    /// SqliteDataBaseÀà·â×°ÁËÒ»¸ö³£×¤QSqlDataBase¶ÔÏó m_database
-    /// ²¢ÇÒ¶Ô¸ÃQSqlDataBase¶ÔÏó½øĞĞ½Ó¿Ú·â×°
-    /// ÀàÄÚ³ÉÔ±Îª·â×°µÄQSqlData¶ÔÏóµÄ»ù±¾ĞÅÏ¢¡£°üÀ¨Ö÷»úÃûÓÃ»§ÃûÃÜÂëÊı¾İ¿âÎÄ¼şÃûÂ·¾¶µÈ
-    /// ±¾ÀàµÄ×÷Îª»ù´¡µÄQsqliteÊı¾İ¿â·â×°£¬Ìá¹©¸ø¸ü¸ß¼¶µÄ¹ÜÀíÀà½Ó¿Ú½øĞĞ²Ù×÷£¬
+    /// SqliteDataBaseç±»å°è£…äº†ä¸€ä¸ªå¸¸é©»QSqlDataBaseå¯¹è±¡ m_database
+    /// å¹¶ä¸”å¯¹è¯¥QSqlDataBaseå¯¹è±¡è¿›è¡Œæ¥å£å°è£…
+    /// ç±»å†…æˆå‘˜ä¸ºå°è£…çš„QSqlDataå¯¹è±¡çš„åŸºæœ¬ä¿¡æ¯ã€‚åŒ…æ‹¬ä¸»æœºåç”¨æˆ·åå¯†ç æ•°æ®åº“æ–‡ä»¶åè·¯å¾„ç­‰
+    /// æœ¬ç±»çš„ä½œä¸ºåŸºç¡€çš„Qsqliteæ•°æ®åº“å°è£…ï¼Œæä¾›ç»™æ›´é«˜çº§çš„ç®¡ç†ç±»æ¥å£è¿›è¡Œæ“ä½œï¼Œ
     /// </summary>
 public:
     
 public:
    explicit  QSqliteDataBase(QString connectionName, QString fileName);
-    ~QSqliteDataBase();//database »á±»¹Ø±Õ
+    ~QSqliteDataBase();//database ä¼šè¢«å…³é—­
     QSqlDatabase* getQSqlDatabase();
-    bool openDataBase();//´ò¿ªÊı¾İ¿â£ºÖ±½Ó³¢ÊÔ´ò¿ª³ÉÔ±±äÁ¿ÀïÃæµÄÊı¾İ
+    bool openDataBase();//æ‰“å¼€æ•°æ®åº“ï¼šç›´æ¥å°è¯•æ‰“å¼€æˆå‘˜å˜é‡é‡Œé¢çš„æ•°æ®
 	bool isOpened();
-	void closeDataBase();//¹Ø±Õdatabase
-    bool createTable(QString tableName, QMap<QString, QString> tableData);//ÔÚdatabaseÀïÃæ½¨Á¢±í¸ñ
-    bool checkTableExist(QString tableName);//ÊäÈë±í¸ñÃû×Ö£¬ÔÚdatabase²éÕÒ±í¸ñÊÇ·ñ´æÔÚ¡¾finished¡¿
-    bool deleteTable(QString tableName);//ÊäÈë±í¸ñÃû×Ö£¬ÔÚdatabaseÀïÃæÉ¾³ı±í¡¾finished¡¿
-    bool addData(QString tableName, QMap<QString, QString> tableData);//Ôö¼ÓÊı¾İ
-    bool deleteData(QString tableName, QMap<QString, QString> where); //É¾³ıÒ»Ìõ¼ÇÂ¼
-    bool sendDatabaseQuery(QString m_query_sql); //·¢ËÍÊı¾İ¿âÓï¾ä
-    bool updateData(QString tableName, QMap<QString, QString> where, QMap<QString, QString> data);  //¸üĞÂÊı¾İ
-    bool find(QString tableName, QList<QString> key, QMap<QString, QString> where, QList<QList<QString>>* row);    //²éÕÒ
-    bool find(QString tableName, QList<QString> key, QList<QList<QString>>* row);    //²éÕÒËùÓĞ
+	void closeDataBase();//å…³é—­database
+    bool createTable(QString tableName, QMap<QString, QString> tableData);//åœ¨databaseé‡Œé¢å»ºç«‹è¡¨æ ¼
+    bool checkTableExist(QString tableName);//è¾“å…¥è¡¨æ ¼åå­—ï¼Œåœ¨databaseæŸ¥æ‰¾è¡¨æ ¼æ˜¯å¦å­˜åœ¨ã€finishedã€‘
+    bool deleteTable(QString tableName);//è¾“å…¥è¡¨æ ¼åå­—ï¼Œåœ¨databaseé‡Œé¢åˆ é™¤è¡¨ã€finishedã€‘
+    bool addData(QString tableName, QMap<QString, QString> tableData);//å¢åŠ æ•°æ®
+    bool deleteData(QString tableName, QMap<QString, QString> where); //åˆ é™¤ä¸€æ¡è®°å½•
+    bool sendDatabaseQuery(QString m_query_sql); //å‘é€æ•°æ®åº“è¯­å¥
+    bool updateData(QString tableName, QMap<QString, QString> where, QMap<QString, QString> data);  //æ›´æ–°æ•°æ®
+    bool find(QString tableName, QList<QString> key, QMap<QString, QString> where, QList<QList<QString>>* row);    //æŸ¥æ‰¾
+    bool find(QString tableName, QList<QString> key, QList<QList<QString>>* row);    //æŸ¥æ‰¾æ‰€æœ‰
     QString getError();
 private:
     bool _databaseOpened = false;
 	std::mutex mutex_database;
 	QSqlDatabase _database;
-	std::unique_ptr<QSqlQueryModel>_queryModel;//sql ²éÑ¯±í
-	std::unique_ptr<QSqlQuery> _query;//sql Óï¾äÖ´ĞĞ¶ÔÏó
-	QString _databaseFilePath;   //Êı¾İ¿âÎÄ¼şÂ·¾¶
-	QSqlError _error;//sql ´íÎó¶ÔÏó
-	QSqlRecord _record;//sql ¼ÇÂ¼¶ÔÏó
+	std::unique_ptr<QSqlQueryModel>_queryModel;//sql æŸ¥è¯¢è¡¨
+	std::unique_ptr<QSqlQuery> _query;//sql è¯­å¥æ‰§è¡Œå¯¹è±¡
+	QString _databaseFilePath;   //æ•°æ®åº“æ–‡ä»¶è·¯å¾„
+	QSqlError _error;//sql é”™è¯¯å¯¹è±¡
+	QSqlRecord _record;//sql è®°å½•å¯¹è±¡
 	void errorReport(std::string msg);
 	void infoReport(std::string msg);
 	void traceReport(std::string msg);

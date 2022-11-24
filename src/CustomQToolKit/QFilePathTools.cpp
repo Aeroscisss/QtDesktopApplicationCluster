@@ -41,7 +41,7 @@ bool QFilePathTools::absoluteToReletive(QString absolutePath, QString& reletiveP
 	bool _isDir = fileInfo.isDir();
 	bool _isFile = fileInfo.isFile();
 	if (!(_isDir && _isFile)) {
-		return false;//Ðé¹¹µÄÂ·¾¶
+		return false;//è™šæž„çš„è·¯å¾„
 	}
 	else {
 		QDir thisDir;
@@ -59,7 +59,7 @@ bool QFilePathTools::reletiveToAbsolute(QString reletivePath, QString& absoluteP
 	bool _isDir = fileInfo.isDir();
 	bool _isFile = fileInfo.isFile();
 	if (!(_isDir && _isFile)) {
-		return false;//Ðé¹¹µÄÂ·¾¶
+		return false;//è™šæž„çš„è·¯å¾„
 	}
 	else {
 		absolutePath = fileInfo.absolutePath();

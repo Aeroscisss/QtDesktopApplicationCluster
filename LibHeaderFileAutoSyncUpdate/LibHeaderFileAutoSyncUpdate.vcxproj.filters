@@ -42,11 +42,14 @@
     <Filter Include="Source Files\Window">
       <UniqueIdentifier>{0468cb4d-63d6-48f4-b357-9edd2a98cad9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Mid">
-      <UniqueIdentifier>{81d89e05-4462-4171-bdde-14b07cf780be}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Midterm">
       <UniqueIdentifier>{7aec4d4e-9da9-41ac-9175-7baa737c4b03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Module\FileMapping">
+      <UniqueIdentifier>{f418bc1e-2128-4989-bcf8-30c863ba1b7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Module\FileMapping">
+      <UniqueIdentifier>{81d89e05-4462-4171-bdde-14b07cf780be}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -80,7 +83,22 @@
       <Filter>Source Files\Window</Filter>
     </ClCompile>
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingManager.cpp">
-      <Filter>Source Files\Module</Filter>
+      <Filter>Source Files\Module\FileMapping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingPattern.cpp">
+      <Filter>Source Files\Module\FileMapping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingRule.cpp">
+      <Filter>Source Files\Module\FileMapping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingRuleParser.cpp">
+      <Filter>Source Files\Module\FileMapping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingTask.cpp">
+      <Filter>Source Files\Module\FileMapping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingUnit.cpp">
+      <Filter>Source Files\Module\FileMapping</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -106,7 +124,7 @@
       <Filter>Header Files\Module</Filter>
     </QtMoc>
     <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingManager.h">
-      <Filter>Header Files\Module</Filter>
+      <Filter>Header Files\Module\FileMapping</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -116,5 +134,22 @@
     <QtUic Include="..\src\CustomQWidget\CustomMsgBrowserWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingPattern.h">
+      <Filter>Header Files\Module\FileMapping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingRule.h">
+      <Filter>Header Files\Module\FileMapping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingRuleParser.h">
+      <Filter>Header Files\Module\FileMapping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingTask.h">
+      <Filter>Header Files\Module\FileMapping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingUnit.h">
+      <Filter>Header Files\Module\FileMapping</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

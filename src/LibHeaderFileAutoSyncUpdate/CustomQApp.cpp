@@ -21,7 +21,23 @@ CustomQApp::~CustomQApp()
 
 bool CustomQApp::initialize()
 {
-	return CustomAbstractQApp::initialize();
+	if(!CustomAbstractQApp::initialize())
+		return false;
+	if(!initModule())
+		return false;
+	if (!initUi())
+		return false;
+	return true;
+}
+
+bool CustomQApp::release()
+{
+	return true;
+}
+
+void CustomQApp::showIntroWindow()
+{
+	appUi.mainWindow->show();
 }
 
 bool CustomQApp::initModule()

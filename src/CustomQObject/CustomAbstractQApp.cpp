@@ -23,6 +23,11 @@ bool CustomAbstractQApp::release()
 	return true;
 }
 
+void CustomAbstractQApp::showIntroWindow()
+{
+	qDebug() << "CustomAbstractQApp::showIntroWindow ";
+}
+
 bool CustomAbstractQApp::initModule()
 {
 	return true;
