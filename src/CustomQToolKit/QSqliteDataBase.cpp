@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "QSqliteDataBase.h"
 #include "PiStandaloneReport.h"
 #include "basicModule/DevelopLog.h"

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /*
 	 ___________________
 	/					\
@@ -19,16 +19,17 @@ public:
 	CustomMsgBrowserWidget(QWidget* parent = nullptr);
 	~CustomMsgBrowserWidget();
 	void setMsgTimePrifixAddition(bool addFix);
-	void setCustomPrifixAddition(bool addCustomFix,QString text);
+	void setCustomPrifixAddition(bool addCustomFix, QString text);
 	void appendMsg(QString msg);
 	void setLayoutDirection(bool isBottomUp);
+	bool setDefaultPointSize(int size);
 public slots:
 	void rec_appendMsg(QString msg);
 private:
 	Ui::CustomMsgBrowserWidgetClass ui;
 	int defaultFontPointSize;
-	bool addTimePrefix=true;
-	bool addCustomPrefix=false;
+	bool addTimePrefix = true;
+	bool addCustomPrefix = false;
 	QString customPrifix;
 private slots:
 	void on_btn_clearTextBrowser_clicked();

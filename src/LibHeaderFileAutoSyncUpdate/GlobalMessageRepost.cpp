@@ -1,4 +1,4 @@
-#include "GlobalMessageRepost.h"
+﻿#include "GlobalMessageRepost.h"
 #include <memory>
 #include <iostream>
 using namespace std;
@@ -32,6 +32,10 @@ void GlobalMessageRepost::sendNewMsg(QString msg, int enumMsgDst)
 		int mask = 0x01 << n;
 		int dst =mask&enumMsgDst;
 		switch (dst) {
+		case MsgDst::Console:
+			msg += "\n";
+			printf_s(msg.toStdString().c_str());
+			break;
 		case MsgDst::MainWindowUserMsgBrowser:
 			emit sig_globalMessageRepost_mainWindowUserMsgBrowser(msg);
 			//cout << "emit sig_globalMessageRepost_mainWindowUserMsgBrowser(msg);" << endl;

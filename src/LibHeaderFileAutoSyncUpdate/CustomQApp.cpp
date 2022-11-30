@@ -2,14 +2,17 @@
 #include "CustomQMainWindow.h"
 #include <QString>
 #include "GlobalMessageRepost.h"
-struct CustomAbstractQApp::AppModule 
+#include "FileMappingManager.h"
+struct CustomAbstractQApp::AppModule
 {
 	GlobalMessageRepost* globalMsgRepost = nullptr;
+	FileMappingManager* fileMappingManager = nullptr;
 }appModule;
 struct CustomAbstractQApp::AppUi
 {
-	CustomAbstractQMainWindow* mainWindow = nullptr;
+	CustomQMainWindow* mainWindow = nullptr;
 }appUi;
+//这是一个UTF8测试
 CustomQApp::CustomQApp(int& argc, char** argv)
 	:CustomAbstractQApp(argc, argv)
 {
@@ -17,16 +20,18 @@ CustomQApp::CustomQApp(int& argc, char** argv)
 
 CustomQApp::~CustomQApp()
 {
+	release();
 }
 
 bool CustomQApp::initialize()
 {
-	if(!CustomAbstractQApp::initialize())
+	if (!CustomAbstractQApp::initialize())
 		return false;
-	if(!initModule())
+	if (!initModule())
 		return false;
 	if (!initUi())
 		return false;
+	connectSigs();
 	return true;
 }
 
@@ -44,6 +49,7 @@ bool CustomQApp::initModule()
 {
 	try {
 		appModule.globalMsgRepost = &GlobalMessageRepost::Instance();
+		appModule.fileMappingManager = &FileMappingManager::Instance();
 		return true;
 	}
 	catch (std::exception e) {
@@ -67,4 +73,6 @@ bool CustomQApp::initUi()
 void CustomQApp::connectSigs()
 {
 	CustomAbstractQApp::connectSigs();
+
 }
+

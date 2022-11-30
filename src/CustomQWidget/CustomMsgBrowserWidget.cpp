@@ -1,4 +1,4 @@
-#include "CustomQObject/CustomAbstractQWidget.h"
+﻿#include "CustomQObject/CustomAbstractQWidget.h"
 #include "CustomMsgBrowserWidget.h"
 #include <QTime>
 CustomMsgBrowserWidget::CustomMsgBrowserWidget(QWidget *parent)
@@ -22,6 +22,15 @@ void CustomMsgBrowserWidget::setCustomPrifixAddition(bool addCustomFix, QString 
 {
 	addCustomPrefix = addCustomFix;
 	customPrifix = text;
+}
+
+bool CustomMsgBrowserWidget::setDefaultPointSize(int size)
+{
+	if (size < 0)
+		return false;
+	defaultFontPointSize = size;
+	ui.textBrowser->setFontPointSize(defaultFontPointSize);
+	return true;
 }
 
 void CustomMsgBrowserWidget::appendMsg(QString msg)

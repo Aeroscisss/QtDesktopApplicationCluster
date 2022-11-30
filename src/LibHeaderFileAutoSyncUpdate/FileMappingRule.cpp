@@ -1,4 +1,4 @@
-#include "FileMappingRule.h"
+﻿#include "FileMappingRule.h"
 
 FileMappingRule::FileMappingRule()
 {

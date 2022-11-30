@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QtSql/QSqlDriver>
 #include <QtSql/QSqlDatabase>

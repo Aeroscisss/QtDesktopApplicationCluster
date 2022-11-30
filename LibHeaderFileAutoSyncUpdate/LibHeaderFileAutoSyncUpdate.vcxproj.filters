@@ -42,14 +42,20 @@
     <Filter Include="Source Files\Window">
       <UniqueIdentifier>{0468cb4d-63d6-48f4-b357-9edd2a98cad9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Midterm">
-      <UniqueIdentifier>{7aec4d4e-9da9-41ac-9175-7baa737c4b03}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Module\FileMapping">
       <UniqueIdentifier>{f418bc1e-2128-4989-bcf8-30c863ba1b7b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Module\FileMapping">
       <UniqueIdentifier>{81d89e05-4462-4171-bdde-14b07cf780be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CustomQWidget\FileMapping">
+      <UniqueIdentifier>{89b8fe0f-2de0-4587-ad58-a7b813a911c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ToolKit">
+      <UniqueIdentifier>{d67bb364-0955-45a2-aa92-be00bcffcd38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ToolKit">
+      <UniqueIdentifier>{0f0a7393-898d-4ea4-993b-63a297945786}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +106,18 @@
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingUnit.cpp">
       <Filter>Source Files\Module\FileMapping</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingPatternWidget.cpp">
+      <Filter>Source Files\CustomQWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\CustomQToolKit\QJsonIO.cpp">
+      <Filter>Source Files\ToolKit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\CustomQWidget\assembledQWidget\CustomQLabelEdit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingTaskWidget.cpp">
+      <Filter>Source Files\CustomQWidget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\CustomQMainWindow.h">
@@ -126,12 +144,27 @@
     <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingManager.h">
       <Filter>Header Files\Module\FileMapping</Filter>
     </QtMoc>
+    <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingPatternWidget.h">
+      <Filter>Header Files\CustomQWidget\FileMapping</Filter>
+    </QtMoc>
+    <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingTaskWidget.h">
+      <Filter>Header Files\CustomQWidget\FileMapping</Filter>
+    </QtMoc>
+    <QtMoc Include="..\src\CustomQWidget\assembledQWidget\CustomQLabelEdit.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="..\src\LibHeaderFileAutoSyncUpdate\CustomQMainWindow.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="..\src\CustomQWidget\CustomMsgBrowserWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingPatternWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingTaskWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -150,6 +183,9 @@
     </ClInclude>
     <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingUnit.h">
       <Filter>Header Files\Module\FileMapping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\CustomQToolKit\QJsonIO.h">
+      <Filter>ToolKit</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

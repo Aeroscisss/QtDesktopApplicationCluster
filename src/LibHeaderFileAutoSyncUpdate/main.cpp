@@ -1,4 +1,4 @@
-#include <QtWidgets/QApplication>
+﻿#include <QtWidgets/QApplication>
 #include "CustomQApp.h"
 #include <QDebug>
 int main(int argc, char *argv[])

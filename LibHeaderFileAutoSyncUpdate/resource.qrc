@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>assets/icon/HeaderAsync128.ico</file>
         <file>assets/icon/HeaderAsync1024.png</file>
+        <file>assets/image/add_black.png</file>
+        <file>assets/image/redCross.png</file>
     </qresource>
 </RCC>

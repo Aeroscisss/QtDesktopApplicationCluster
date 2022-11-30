@@ -1,4 +1,4 @@
-#include "CustomAbstractQApp.h"
+﻿#include "CustomAbstractQApp.h"
 
 CustomAbstractQApp::CustomAbstractQApp(int& argc, char** argv)
 	: QApplication(argc, argv)
@@ -6,6 +6,7 @@ CustomAbstractQApp::CustomAbstractQApp(int& argc, char** argv)
 
 CustomAbstractQApp::~CustomAbstractQApp()
 {
+	release();
 }
 
 bool CustomAbstractQApp::initialize()

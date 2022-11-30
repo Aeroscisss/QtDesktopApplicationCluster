@@ -1,4 +1,4 @@
-#include "QFilePathTools.h"
+﻿#include "QFilePathTools.h"
 #include<QDir>
 #include<QFileInfo>
 

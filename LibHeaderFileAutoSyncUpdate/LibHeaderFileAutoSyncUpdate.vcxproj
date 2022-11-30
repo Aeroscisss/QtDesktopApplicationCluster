@@ -13,8 +13,8 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{249F75D9-86C6-40C6-A793-16231C680673}</ProjectGuid>
     <Keyword>QtVS_v304</Keyword>
-    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.22000.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.22000.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0</WindowsTargetPlatformVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -31,12 +31,12 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>Qt6.2.2</QtInstall>
+    <QtInstall>Qt5.15.2</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>Qt6.2.2</QtInstall>
+    <QtInstall>Qt5.15.2</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
@@ -61,11 +61,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)src/LibHeaderFileAutoSyncUpdate;$(SolutionDir)src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)src/LibHeaderFileAutoSyncUpdate;$(SolutionDir)src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -101,7 +103,11 @@
     <ClCompile Include="..\src\CustomQObject\CustomAbstractQApp.cpp" />
     <ClCompile Include="..\src\CustomQObject\CustomAbstractQMainWindow.cpp" />
     <ClCompile Include="..\src\CustomQObject\CustomAbstractQWidget.cpp" />
+    <ClCompile Include="..\src\CustomQToolKit\QJsonIO.cpp" />
+    <ClCompile Include="..\src\CustomQWidget\assembledQWidget\CustomQLabelEdit.cpp" />
     <ClCompile Include="..\src\CustomQWidget\CustomMsgBrowserWidget.cpp" />
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingPatternWidget.cpp" />
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingTaskWidget.cpp" />
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\CustomQApp.cpp" />
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\CustomQMainWindow.cpp" />
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingManager.cpp" />
@@ -118,6 +124,8 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="..\src\CustomQWidget\CustomMsgBrowserWidget.ui" />
+    <QtUic Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingPatternWidget.ui" />
+    <QtUic Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingTaskWidget.ui" />
     <QtUic Include="..\src\LibHeaderFileAutoSyncUpdate\CustomQMainWindow.ui" />
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +150,10 @@
     <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingPatternWidget.h" />
+    <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingTaskWidget.h" />
+    <ClInclude Include="..\src\CustomQToolKit\QJsonIO.h" />
+    <QtMoc Include="..\src\CustomQWidget\assembledQWidget\CustomQLabelEdit.h" />
     <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingPattern.h" />
     <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingRule.h" />
     <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingRuleParser.h" />

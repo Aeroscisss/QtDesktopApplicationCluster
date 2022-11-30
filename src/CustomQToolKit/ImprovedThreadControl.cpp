@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ImprovedThreadControl.h"
 #include <QObject>
 #include <QThread>
