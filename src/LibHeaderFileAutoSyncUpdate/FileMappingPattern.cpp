@@ -1,6 +1,23 @@
 ﻿#include "FileMappingPattern.h"
+#include <QJsonArray>
 FileMappingPattern::FileMappingPattern() {
 
+}
+
+FileMappingPattern::FileMappingPattern(QJsonObject obj)
+{
+	if (obj.contains("patternName")) {
+		QJsonValue name = obj["patternName"];
+		m_patternName = name.toString();
+	}
+	if (obj.contains("taskList")) {
+		QJsonValue taskList_v = obj["taskList"];
+		QJsonArray taskList = taskList_v.toArray();
+		std::lock_guard<std::mutex>locker(mutex_tasks);
+		for(auto iter=taskList.begin();iter!=taskList.end();iter++){
+			list_task.append(FileMappingTask(iter->toObject()));
+		}
+	}
 }
 
 FileMappingPattern::FileMappingPattern(QString patternName)
@@ -40,7 +57,21 @@ void FileMappingPattern::setName(QString name)
 
 void FileMappingPattern::updateTaskList(QList<FileMappingTask>& list)
 {
+	std::lock_guard<std::mutex>locker(mutex_tasks);
 	list_task = list;
+}
+
+QJsonObject FileMappingPattern::toJsonObj()
+{
+	QJsonObject obj;
+	QJsonArray taskList;
+	std::lock_guard<std::mutex>locker(mutex_tasks);
+	for (auto iter = list_task.begin(); iter != list_task.end(); iter++) {
+		taskList.append(iter->toJsonObj());
+	}
+	obj.insert("patternName",m_patternName);
+	obj.insert("taskList", taskList);
+	return obj;
 }
 
 
