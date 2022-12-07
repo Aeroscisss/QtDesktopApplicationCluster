@@ -3,11 +3,13 @@
 #include <QList>
 #include <QMap>
 #include <mutex>
+#include <QJsonObject>
 #include "FileMappingTask.h"
 class FileMappingPattern
 {
 public:
 	FileMappingPattern();
+	FileMappingPattern(QJsonObject obj);
 	FileMappingPattern(QString patternName);
 	~FileMappingPattern()=default;
 	FileMappingPattern(const FileMappingPattern&);
@@ -17,6 +19,7 @@ public:
 	QString name();
 	void setName(QString name);
 	void updateTaskList(QList<FileMappingTask>&list_task);
+	QJsonObject toJsonObj();
 private:
 	QString m_patternName;
 	std::mutex mutex_tasks;

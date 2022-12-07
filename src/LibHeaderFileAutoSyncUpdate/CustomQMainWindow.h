@@ -15,8 +15,11 @@ public:
     ~CustomQMainWindow();
 public slots:
     void rec_refreshPatterns();
-    void rec_refresPatternContents();
+    void rec_refreshPatternContents();
+    void rec_refreshSaveAsAction();
 signals:
+    void sig_requestOpenRuleFile(QString filePath);
+    void sig_requestSaveRuleFile(QString filePath);
     void sig_requestCreateNewPattern(QString patternName);
     void sig_requestDeletePattern(QString patternName);
 private:
@@ -28,6 +31,9 @@ private:
     CustomMsgBrowserWidget* msgBrowser = nullptr;
     std::unique_ptr<CustomFileMappingPatternWidget> patternWidget=nullptr;
 private slots:
+    void on_action_openFile_triggered();
+    void on_action_saveFile_triggered();
+    void on_action_saveFileAs_triggered();
     void on_action_createNewPattern_triggered();
     void on_action_delCurrPattern_triggered();
 };
