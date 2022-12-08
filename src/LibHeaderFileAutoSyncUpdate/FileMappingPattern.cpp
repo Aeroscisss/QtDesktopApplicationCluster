@@ -1,4 +1,4 @@
-﻿#include "FileMappingPattern.h"
+#include "FileMappingPattern.h"
 #include <QJsonArray>
 FileMappingPattern::FileMappingPattern() {
 
@@ -72,6 +72,29 @@ QJsonObject FileMappingPattern::toJsonObj()
 	obj.insert("patternName",m_patternName);
 	obj.insert("taskList", taskList);
 	return obj;
+}
+
+QString FileMappingPattern::toConsoleString()
+{
+	QString out;
+	out += "PatternName[" + m_patternName + "]:\n";
+	std::lock_guard<std::mutex>locker(mutex_tasks);
+	for (auto iter = list_task.begin(); iter != list_task.end(); iter++) {
+		QString taskString=iter->toConsoleString();
+		out += taskString;
+	}
+	return out;
+}
+
+QString FileMappingPattern::toString()
+{
+	QString out;
+	out += "PatternName[" +m_patternName + "]:";
+	std::lock_guard<std::mutex>locker(mutex_tasks);
+	for (auto iter = list_task.begin(); iter != list_task.end(); iter++) {
+		out + iter->toString() + "\n";
+	}
+	return out;
 }
 
 

@@ -1,4 +1,4 @@
-﻿#include <QObject>
+#include <QObject>
 #include <QMap>
 #include <QString>
 #include <QStringList>
@@ -17,12 +17,15 @@ public:
 	bool updatePattern(QString PatternName,FileMappingPattern &Pattern);
 	bool saveRuleFile(QString filePath);
 	bool openRuleFile(QString filePath);
+	void printRuleFileToConsole();
 	QString getCurrentRuleFilePath();
 public slots:
 	void rec_openRuleFile(QString);
 	void rec_saveRuleFile(QString);
 	void rec_createNewPattern(QString);
 	void rec_deletePattern(QString);
+	void rec_applyPattern(QString);
+	void rec_printPatternsToConsole();
 signals:
 	void sig_fileMappingManager_patternUpdated();
 	void sig_fileMappingManager_ruleFileOpened();
@@ -31,6 +34,7 @@ private:
 	FileMappingManager();
 	bool createNewPattern(QString);
 	bool deletePattern(QString);
+	bool applyPattern(QString);
 private:
 	QMap<QString, FileMappingPattern>map_fileMappingPattern;
 	std::mutex mutex_fileMappingPatern;

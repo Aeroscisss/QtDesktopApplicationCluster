@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <QtWidgets/QMainWindow>
 #include "CustomQObject/CustomAbstractQMainWindow.h"
@@ -22,6 +22,7 @@ signals:
     void sig_requestSaveRuleFile(QString filePath);
     void sig_requestCreateNewPattern(QString patternName);
     void sig_requestDeletePattern(QString patternName);
+    void sig_requestPrintPatternsToConsole();
 private:
     Ui::CustomQMainWindowClass ui;
     void connectSigs();
@@ -36,4 +37,5 @@ private slots:
     void on_action_saveFileAs_triggered();
     void on_action_createNewPattern_triggered();
     void on_action_delCurrPattern_triggered();
+    void on_action_printPatternsToConsole_triggered();
 };

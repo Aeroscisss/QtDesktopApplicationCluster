@@ -12,6 +12,7 @@ CustomFileMappingTaskWidget::CustomFileMappingTaskWidget(FileMappingTask task,QW
 		this, &CustomFileMappingTaskWidget::rec_updateTask);
 	ui.gridLayout_taskName->addWidget(label_taskName);
 	label_taskName->setText(task.name());
+	ui.textEdit_taskScript->setText(task.script());
 }
 
 CustomFileMappingTaskWidget::~CustomFileMappingTaskWidget()

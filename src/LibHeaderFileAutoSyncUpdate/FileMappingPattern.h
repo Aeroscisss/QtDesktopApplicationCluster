@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <QString>
 #include <QList>
 #include <QMap>
@@ -20,6 +20,8 @@ public:
 	void setName(QString name);
 	void updateTaskList(QList<FileMappingTask>&list_task);
 	QJsonObject toJsonObj();
+	QString toConsoleString();
+	QString toString();
 private:
 	QString m_patternName;
 	std::mutex mutex_tasks;

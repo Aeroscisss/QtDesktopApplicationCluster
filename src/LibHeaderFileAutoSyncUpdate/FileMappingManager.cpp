@@ -1,4 +1,4 @@
-﻿#include "FileMappingManager.h"
+#include "FileMappingManager.h"
 #include "FileMappingPattern.h"
 #include "GlobalMessageRepost.h"
 #include <QJsonDocument>
@@ -66,13 +66,27 @@ bool FileMappingManager::updatePattern(QString patternName, FileMappingPattern& 
 bool FileMappingManager::openRuleFile(QString filePath)
 {
 	try {
-		std::lock_guard<std::mutex>locker(mutex_fileMappingPatern);
 		QJsonDocument doc;
 		if (!QJsonIO::readJsonFile(filePath, doc)) {
-			throw std::exception("Currupted File. ");
+			throw std::exception("Corrupted File. ");
+		}
+		QJsonObject obj = doc.object();
+		QJsonArray patternList;
+		if (obj.contains("patternList"))
+		{
+			patternList= obj["patternList"].toArray();
+			QMap<QString, FileMappingPattern>patternMap;
+			for (auto iter = patternList.begin(); iter != patternList.end(); iter++) {
+				QJsonObject patternObj = iter->toObject();
+				FileMappingPattern pattern(patternObj);
+				patternMap.insert(pattern.name(), pattern);
+			}
+			std::lock_guard<std::mutex>locker(mutex_fileMappingPatern);
+			map_fileMappingPattern = patternMap;
 		}
 		currentRuleFilePath = filePath;
 		emit sig_fileMappingManager_ruleFileOpened();
+		emit sig_fileMappingManager_patternUpdated();
 	}
 	catch (std::exception e) {
 		QString msg = "Fail Open File. ";
@@ -80,6 +94,16 @@ bool FileMappingManager::openRuleFile(QString filePath)
 		return false;
 	}
 	return true;
+}
+void FileMappingManager::printRuleFileToConsole()
+{
+	std::lock_guard<std::mutex>locker(mutex_fileMappingPatern);
+	QString stringOut;
+	for (auto iter = map_fileMappingPattern.begin(); iter != map_fileMappingPattern.end(); iter++) {
+		stringOut+=iter->toConsoleString();
+	}
+	printf_s("\n");
+	printf_s(stringOut.toStdString().c_str());
 }
 QString FileMappingManager::getCurrentRuleFilePath()
 {
@@ -119,6 +143,14 @@ bool FileMappingManager::saveRuleFile(QString filePath)
 void FileMappingManager::rec_deletePattern(QString name)
 {
 	deletePattern(name);
+}
+void FileMappingManager::rec_applyPattern(QString  patternName)
+{
+	applyPattern(patternName);
+}
+void FileMappingManager::rec_printPatternsToConsole()
+{
+	printRuleFileToConsole();
 }
 bool FileMappingManager::createNewPattern(QString patternName)
 {
@@ -167,6 +199,10 @@ bool FileMappingManager::deletePattern(QString patternName)
 		GlobalMessageRepost::Instance().sendNewMsg(msg, GlobalMessageRepost::MsgDst::MainWindowUserMsgBrowser);
 		return false;
 	}
+}
+bool FileMappingManager::applyPattern(QString)
+{
+
 }
 void FileMappingManager::rec_openRuleFile(QString path) {
 	openRuleFile(path);

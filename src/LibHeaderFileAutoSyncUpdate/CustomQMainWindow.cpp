@@ -1,4 +1,4 @@
-﻿#include "CustomQMainWindow.h"
+#include "CustomQMainWindow.h"
 #include <QApplication>
 #include <QInputDialog>
 #include <QFileDialog>
@@ -48,6 +48,8 @@ void CustomQMainWindow::connectSigs()
         this, SLOT(rec_refreshPatterns()));
     connect(&FileMappingManager::Instance(), SIGNAL(sig_fileMappingManager_ruleFileOpened()),
         this, SLOT(rec_refreshSaveAsAction()));
+	connect(ui.comboBox_paternSelect, SIGNAL(currentTextChanged(QString)),
+		this, SLOT(rec_refreshPatternContents()));
     connect(this, SIGNAL(sig_requestOpenRuleFile(QString)),
         &FileMappingManager::Instance(), SLOT(rec_openRuleFile(QString)));
     connect(this, SIGNAL(sig_requestSaveRuleFile(QString)),
@@ -56,8 +58,9 @@ void CustomQMainWindow::connectSigs()
         &FileMappingManager::Instance(), SLOT(rec_createNewPattern(QString)));
     connect(this, SIGNAL(sig_requestDeletePattern(QString)),
         &FileMappingManager::Instance(), SLOT(rec_deletePattern(QString)));
-    connect(ui.comboBox_paternSelect, SIGNAL(currentTextChanged(QString)),
-        this, SLOT(rec_refreshPatternContents()));
+    connect(this, SIGNAL(sig_requestPrintPatternsToConsole()),
+        &FileMappingManager::Instance(), SLOT(rec_printPatternsToConsole()));
+    
 }
 void CustomQMainWindow::refreshPatternComboBox()
 {
@@ -70,6 +73,9 @@ void CustomQMainWindow::refreshPatternComboBox()
 }
 void CustomQMainWindow::refreshPatternContents()
 {
+    if (patternWidget != nullptr) {
+        patternWidget->updatePattern();//强制update
+    }
     QString patternName = ui.comboBox_paternSelect->currentText();
     try {
         FileMappingPattern  pattern;
@@ -95,9 +101,22 @@ void CustomQMainWindow::on_action_delCurrPattern_triggered()
         emit sig_requestDeletePattern(currPatternName);
     }
 }
+void CustomQMainWindow::on_action_printPatternsToConsole_triggered()
+{
+    emit sig_requestPrintPatternsToConsole();
+}
 void CustomQMainWindow::on_action_openFile_triggered() 
 {
-    
+    QString filePath=QFileDialog::getOpenFileName(this,
+        tr(("Open Sync Rule File")),
+        "",
+		tr("Sync Rule File (*.syncrule)"));
+	if (!filePath.isNull()){
+		emit sig_requestOpenRuleFile(filePath);
+	}
+	else{
+		//GlobalMessageRepost::Instance().sendNewMsg("Cancel Open Sync Rule File");
+	}
 }
 void CustomQMainWindow::on_action_saveFile_triggered()
 {
