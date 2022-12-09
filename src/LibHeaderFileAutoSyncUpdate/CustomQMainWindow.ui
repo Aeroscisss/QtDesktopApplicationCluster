@@ -62,7 +62,7 @@
          <number>0</number>
         </property>
         <item row="1" column="0">
-         <widget class="QScrollArea" name="frame_pattern">
+         <widget class="QScrollArea" name="scrollArea_pattern">
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
@@ -91,9 +91,6 @@
             <property name="spacing">
              <number>3</number>
             </property>
-            <item row="0" column="0">
-             <layout class="QVBoxLayout" name="verticalLayout_pattern"/>
-            </item>
            </layout>
           </widget>
          </widget>

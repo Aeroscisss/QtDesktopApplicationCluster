@@ -94,16 +94,13 @@
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingPattern.cpp">
       <Filter>Source Files\Module\FileMapping</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingRule.cpp">
-      <Filter>Source Files\Module\FileMapping</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingRuleParser.cpp">
       <Filter>Source Files\Module\FileMapping</Filter>
     </ClCompile>
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingTask.cpp">
       <Filter>Source Files\Module\FileMapping</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingUnit.cpp">
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingOperator.cpp">
       <Filter>Source Files\Module\FileMapping</Filter>
     </ClCompile>
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingPatternWidget.cpp">
@@ -181,7 +178,7 @@
     <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingTask.h">
       <Filter>Header Files\Module\FileMapping</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingUnit.h">
+    <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingOperator.h">
       <Filter>Header Files\Module\FileMapping</Filter>
     </ClInclude>
     <ClInclude Include="..\src\CustomQToolKit\QJsonIO.h">

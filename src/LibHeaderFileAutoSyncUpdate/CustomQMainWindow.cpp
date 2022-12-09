@@ -3,17 +3,25 @@
 #include <QInputDialog>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <qlistview.h>
 #include "GlobalMessageRepost.h"
 #include "FileMappingManager.h"
+#include "FileMappingRuleParser.h"
+#include "FileMappingRule.h"
+
 CustomQMainWindow::CustomQMainWindow(QWidget *parent)
     : CustomAbstractQMainWindow(parent)
 {
     ui.setupUi(this);
     qApp->setWindowIcon(QIcon(":/assets/icon/HeaderAsync128.ico"));
+    QString style = QString("QComboBox QAbstractItemView { min-height: 20px; min-width: %1px}").arg(QString::number(300));
+    ui.comboBox_paternSelect->setStyleSheet(style) ;
+    ui.comboBox_paternSelect->setView(new QListView());///添加listview
     msgBrowser = new CustomMsgBrowserWidget(ui.frame_msgBrowser);
     msgBrowser->setDefaultPointSize(10);
     ui.gridLayout_msgBrowser->addWidget(msgBrowser); 
-    
+    stackedWidget_pattern = new QStackedWidget(this);
+    ui.scrollArea_pattern->setWidget(stackedWidget_pattern);
     rec_refreshSaveAsAction();
     connectSigs();
 }
@@ -73,16 +81,27 @@ void CustomQMainWindow::refreshPatternComboBox()
 }
 void CustomQMainWindow::refreshPatternContents()
 {
-    if (patternWidget != nullptr) {
-        patternWidget->updatePattern();//强制update
+    if (currentPatternWidget != nullptr) {
+        currentPatternWidget->updatePattern();//更新当前的Pattern
     }
     QString patternName = ui.comboBox_paternSelect->currentText();
+    QString patternIndex = ui.comboBox_paternSelect->currentIndex();
     try {
         FileMappingPattern  pattern;
         if (!FileMappingManager::Instance().getPattern(patternName, pattern))
             throw std::exception("Can not Find Such Pattern. ");
-        patternWidget = std::make_unique<CustomFileMappingPatternWidget>(pattern);
-        ui.verticalLayout_pattern->addWidget(patternWidget.get());
+        CustomFileMappingPatternWidget* patternWidget=nullptr;
+        auto iter = map_patternWidget.find(patternName);
+        if (iter==map_patternWidget.end()) {//不存在
+            patternWidget= new CustomFileMappingPatternWidget(pattern, this);
+            map_patternWidget.insert(patternName, patternWidget);
+            stackedWidget_pattern->addWidget(patternWidget);
+        }
+        else {
+            patternWidget = iter.value();
+        }
+        stackedWidget_pattern->setCurrentWidget(patternWidget);
+        currentPatternWidget = patternWidget;
     }
     catch (std::exception e) {
         QString errMsg = QString::fromStdString(e.what())+"Pattern Name:["+patternName+"]";
@@ -104,6 +123,17 @@ void CustomQMainWindow::on_action_delCurrPattern_triggered()
 void CustomQMainWindow::on_action_printPatternsToConsole_triggered()
 {
     emit sig_requestPrintPatternsToConsole();
+}
+void CustomQMainWindow::on_btn_apply_clicked()
+{
+    if (currentPatternWidget != nullptr) {
+        FileMappingPattern pattern;
+        FileMappingManager::Instance().getPattern(ui.comboBox_paternSelect->currentText(), pattern);
+        QList<FileMappingTask>tasks=pattern.getTaskList();
+        for (auto task : tasks) {
+            FileMappingRule rule=FileMappingRuleParser::Instance().parseRule(task.script());
+        }
+    }
 }
 void CustomQMainWindow::on_action_openFile_triggered() 
 {

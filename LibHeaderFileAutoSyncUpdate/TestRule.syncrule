@@ -4,11 +4,11 @@
             "patternName": "TestPattern1",
             "taskList": [
                 {
-                    "rawScript": "from:{\".testFile/src\"}\nto:{\".testFile/dst\"}\nrule:{}",
+                    "rawScript": "from:{\".testFile/src\"}\nto:{\".testFile/dst\"}\nrule:{\".h\",\".cpp\"}",
                     "taskName": "P1T1"
                 },
                 {
-                    "rawScript": "from:{\".testFile/src2\"}\nto:{\".testFile/dst2\"}\nrule:{}",
+                    "rawScript": "from:{\".testFile/src2\"}\nto:{\".testFile/dst2\"}\nrule:{\".h\",\".cpp\"}",
                     "taskName": "P1T2"
                 }
             ]
@@ -17,7 +17,7 @@
             "patternName": "TestPattern2",
             "taskList": [
                 {
-                    "rawScript": "from:{\".testFile/src3\"}\nto:{\".testFile/dst3\"}\nrule:{}",
+                    "rawScript": "from:{\".testFile/src3\"}\nto:{\".testFile/dst3\"}\nrule:{\".h\",\".cpp\"}",
                     "taskName": "T2P1"
                 }
             ]

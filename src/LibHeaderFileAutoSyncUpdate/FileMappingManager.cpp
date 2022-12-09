@@ -202,8 +202,9 @@ bool FileMappingManager::deletePattern(QString patternName)
 }
 bool FileMappingManager::applyPattern(QString)
 {
-
+	return false;
 }
+
 void FileMappingManager::rec_openRuleFile(QString path) {
 	openRuleFile(path);
 }

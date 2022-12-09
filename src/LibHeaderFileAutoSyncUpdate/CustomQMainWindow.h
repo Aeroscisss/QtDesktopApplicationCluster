@@ -1,6 +1,9 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
+#include <QStackedWidget>
+#include <QMap>
+#include <QString>
 #include "CustomQObject/CustomAbstractQMainWindow.h"
 #include "CustomQWidget/CustomMsgBrowserWidget.h"
 #include "CustomFileMappingPatternWidget.h"
@@ -30,7 +33,9 @@ private:
     void refreshPatternContents();
 private:
     CustomMsgBrowserWidget* msgBrowser = nullptr;
-    std::unique_ptr<CustomFileMappingPatternWidget> patternWidget=nullptr;
+    QStackedWidget* stackedWidget_pattern = nullptr;
+    QMap<QString ,CustomFileMappingPatternWidget*>map_patternWidget;
+    CustomFileMappingPatternWidget* currentPatternWidget = nullptr;
 private slots:
     void on_action_openFile_triggered();
     void on_action_saveFile_triggered();
@@ -38,4 +43,5 @@ private slots:
     void on_action_createNewPattern_triggered();
     void on_action_delCurrPattern_triggered();
     void on_action_printPatternsToConsole_triggered();
+    void on_btn_apply_clicked();
 };
