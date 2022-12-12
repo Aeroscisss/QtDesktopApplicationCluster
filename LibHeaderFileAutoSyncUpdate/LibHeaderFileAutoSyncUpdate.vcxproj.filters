@@ -57,6 +57,9 @@
     <Filter Include="Source Files\ToolKit">
       <UniqueIdentifier>{0f0a7393-898d-4ea4-993b-63a297945786}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CppToolKit">
+      <UniqueIdentifier>{34a4d457-efc1-4cee-8927-1e3b8e9285dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="resource.qrc">
@@ -183,6 +186,9 @@
     </ClInclude>
     <ClInclude Include="..\src\CustomQToolKit\QJsonIO.h">
       <Filter>ToolKit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\CustomCppToolKit\MultiThreadQueue.h">
+      <Filter>CppToolKit</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

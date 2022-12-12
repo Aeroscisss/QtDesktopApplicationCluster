@@ -151,6 +151,7 @@
   <ItemGroup>
     <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingPatternWidget.h" />
     <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingTaskWidget.h" />
+    <ClInclude Include="..\src\CustomCppToolKit\MultiThreadQueue.h" />
     <ClInclude Include="..\src\CustomQToolKit\QJsonIO.h" />
     <QtMoc Include="..\src\CustomQWidget\assembledQWidget\CustomQLabelEdit.h" />
     <ClInclude Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingPattern.h" />
