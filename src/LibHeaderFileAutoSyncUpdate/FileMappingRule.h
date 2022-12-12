@@ -15,7 +15,7 @@ public:
 	QStringList dstList() { return dsts; }
 	void setDstList(QStringList list){ dsts = list; }
 	void addDst(QString src) { srcs.append(src); }
-	QStringList filterLits() { return filters; }
+	QStringList filterList() { return filters; }
 	void setFilterList(QStringList list) { filters = list; }
 	void addFilter(QString filter) { filters.append(filter); }
 	bool full() {

@@ -1,23 +1,27 @@
 #pragma once
 #include <QString>
 #include <QList>
-#include <QQueue>
+#include <queue>
 #include "FileMappingRule.h"
 #include <Thread>
 #include <memory>
 #include <mutex>
+#include "CustomCppToolKit/MultiThreadQueue.h"
 class FileMappingOperator
 {
 public:
 	static FileMappingOperator& Instance();
 	~FileMappingOperator();
-	static void threadLoopRun();
-	bool threadIsInterrupted;
-	void addRule(FileMappingRule);
+	std::unique_ptr<MultiThreadQueue<FileMappingRule> >ruleQueue;
+	void threadLoopRun();
+	bool threadIsInterrupted=false;
 private:
+	void applyRule(FileMappingRule rule);
+	QString smallFileMd5(QString path);
+	QString bigFileMd5(QString path);
+	void regexCheck(QStringList& list,QStringList regexList);
+	bool copyFile(QString srcPath, QString dstPath, bool coverFileIfExist);
 	FileMappingOperator();
-	std::mutex mutex_rules;
-	QQueue<FileMappingRule>queue_rules;
 	std::unique_ptr<std::thread>m_thread = nullptr;
 };
 
