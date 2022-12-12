@@ -24,10 +24,13 @@ FileMappingOperator::~FileMappingOperator()
 
 void FileMappingOperator::threadLoopRun()
 {
+	threadIsInterrupted = false;
 	while (!FileMappingOperator::Instance().threadIsInterrupted)
 	{
 		FileMappingRule rule;
 		ruleQueue->wait(rule);
+		applyRule(rule);
+
 	}
 }
 
@@ -41,7 +44,7 @@ void FileMappingOperator::applyRule(FileMappingRule rule)
 		QString fileCompleteName;
 		QString fileBaseName;
 		QString md5;
-		quint64 fileByteSize;
+		quint64 fileByteSize=0;
 	};
 	QStringList filters = rule.filterList();//正则匹配列表
 	QFileInfo fileInfo;//文件Info对象
