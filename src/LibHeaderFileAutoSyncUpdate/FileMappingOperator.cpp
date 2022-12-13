@@ -2,6 +2,7 @@
 #include <memory>
 #include <QCryptographicHash>
 #include <QTextStream>
+#include <QDir>
 #include "QFileInfo"
 #include "GlobalMessageRepost.h"
 FileMappingOperator& FileMappingOperator::Instance()
@@ -13,69 +14,50 @@ FileMappingOperator& FileMappingOperator::Instance()
 FileMappingOperator::FileMappingOperator()
 {
 	threadIsInterrupted = false;
-	m_thread = std::make_unique< std::thread>();
+	//m_thread = std::make_unique< std::thread>();
 	ruleQueue = std::make_unique<MultiThreadQueue<FileMappingRule>>();
 }
 
 FileMappingOperator::~FileMappingOperator()
 {
-	m_thread->join();
+	threadIsInterrupted = true;
+	if(m_thread.joinable())
+		m_thread.join();
 }
 
 void FileMappingOperator::threadLoopRun()
 {
 	threadIsInterrupted = false;
+	m_thread = std::thread(&ruleOpLoop);
+}
+
+void FileMappingOperator::ruleOpLoop()
+{
 	while (!FileMappingOperator::Instance().threadIsInterrupted)
 	{
+		GlobalMessageRepost::Instance().sendNewMsg("new loop",1);
 		FileMappingRule rule;
-		ruleQueue->wait(rule);
-		applyRule(rule);
-
+		FileMappingOperator::Instance().ruleQueue->wait(rule);
+		FileMappingOperator::Instance().applyRule(rule);
 	}
 }
 
 void FileMappingOperator::applyRule(FileMappingRule rule)
 {
-	struct CustomFileInfo {
-		explicit CustomFileInfo(QString path) 
-			:filePath(path){}
-		bool isFile = false;
-		QString filePath;
-		QString fileCompleteName;
-		QString fileBaseName;
-		QString md5;
-		quint64 fileByteSize=0;
-	};
-	QStringList filters = rule.filterList();//正则匹配列表
-	QFileInfo fileInfo;//文件Info对象
-	 
-	QStringList srcs = rule.srcList();
-	QMap<QString,CustomFileInfo>srcFileMap;
-	for (auto srcPath : srcs) {
-		regexCheck(srcs, filters);
-		CustomFileInfo customInfoStruct(srcPath);
-		fileInfo = QFileInfo(srcPath);
-		if(!fileInfo.isFile())
-			continue;
-		customInfoStruct.isFile = true;
-		customInfoStruct.fileCompleteName= fileInfo.completeBaseName();
-		customInfoStruct.fileCompleteName = fileInfo.baseName();
-		customInfoStruct.fileByteSize = fileInfo.size();
-		srcFileMap.insert(customInfoStruct.fileCompleteName,customInfoStruct);
-	}
-	QStringList dsts= rule.dstList();
-	QMap<QString, CustomFileInfo>dstFileMap;
-	for (auto dstPath : dsts) {
-		regexCheck(dsts, filters);
-		CustomFileInfo customInfoStruct(dstPath);
-		fileInfo = QFileInfo(dstPath);
-		if (!fileInfo.isFile())
-			continue;
-		customInfoStruct.isFile = true;
-		customInfoStruct.fileCompleteName = fileInfo.completeBaseName();
-		customInfoStruct.fileCompleteName = fileInfo.baseName();
-		customInfoStruct.fileByteSize = fileInfo.size();
-		dstFileMap.insert(customInfoStruct.fileCompleteName, customInfoStruct);
+	QStringList filters = rule.filterList();//获取正则匹配列表
+	QStringList srcs = rule.srcList();//获取源值列表
+	QMap<QString, CustomFileInfo>srcFileMap;//源文件Map
+	convertPathValueIntoFileInfo(srcs, srcFileMap);
+	regexCheck(srcFileMap, filters);
+	QString dst = rule.dst();//获取目的地值列表
+	QMap<QString, CustomFileInfo>dstFileMap;//目的地文件Map
+	if (QFileInfo(dst).isDir()) {
+		findAllFilesUnderFolder(dst, dstFileMap);
+		if (!dst.isEmpty()) {
+			QChar lastChar = *(dst.end() - 1);
+			if (lastChar != '/' && lastChar != '\\')
+				dst += '/';
+		}
 	}
 	for (auto srcFileInfo : srcFileMap) {
 		auto iter = dstFileMap.find(srcFileInfo.fileCompleteName);
@@ -94,8 +76,59 @@ void FileMappingOperator::applyRule(FileMappingRule rule)
 				copyFile(srcFileInfo.filePath, dstFileInfo.filePath,true);
 			}
 		}
+		else {//根本不存在
+			copyFile(srcFileInfo.filePath, dst+srcFileInfo.fileCompleteName, true);
+		}
 	}
 }
+
+void FileMappingOperator::convertPathValueIntoFileInfo(QStringList files, QMap<QString, CustomFileInfo>& fileInfoMap)
+{
+	QMap<QString, CustomFileInfo> newMap;
+	QFileInfo fileInfo;
+	for (auto value : files) {
+		fileInfo= QFileInfo(value);
+		if (!fileInfo.exists()) {//不存在，跳过
+			continue;
+		}
+		if (fileInfo.isFile()) {
+			CustomFileInfo customFileInfo=CustomFileInfo(value);
+			customFileInfo.isFileFlag = true;
+			customFileInfo.fileCompleteName = fileInfo.completeBaseName() + "." + fileInfo.suffix();
+			customFileInfo.fileBaseName = fileInfo.completeBaseName();
+			customFileInfo.fileByteSize = fileInfo.size();
+			newMap.insert(customFileInfo.fileCompleteName, customFileInfo);
+			continue;
+		}
+		if (fileInfo.isDir()) {
+			findAllFilesUnderFolder(value, fileInfoMap);
+			continue;
+		}
+	}
+}
+
+void FileMappingOperator::findAllFilesUnderFolder(QString folderPath, QMap<QString, CustomFileInfo>& fileInfoMap)
+{
+		QDir dir(folderPath);
+	QFileInfoList file_list = dir.entryInfoList(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+	for (auto fileInfo:file_list) {
+		CustomFileInfo customFileInfo = CustomFileInfo(fileInfo.filePath());
+		customFileInfo.isFileFlag = true;
+		customFileInfo.fileCompleteName = fileInfo.completeBaseName()+"."+ fileInfo.suffix();
+		customFileInfo.fileBaseName = fileInfo.completeBaseName();
+		customFileInfo.fileByteSize = fileInfo.size();
+		fileInfoMap.insert(customFileInfo.filePath, customFileInfo);
+		continue;
+	}
+	QFileInfoList folder_list = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+	for (int i = 0; i != folder_list.size(); i++)
+	{
+		QString folderName = folder_list.at(i).absoluteFilePath();
+		findAllFilesUnderFolder(folderName,fileInfoMap);
+	}
+}
+
+
 
 QString FileMappingOperator::smallFileMd5(QString path)
 {
@@ -158,26 +191,20 @@ QString FileMappingOperator::bigFileMd5(QString path)
 	return  str;
 }
 
-void FileMappingOperator::regexCheck(QStringList& list, QStringList regexList)
+void FileMappingOperator::regexCheck(QMap<QString, CustomFileInfo>& map, QStringList regexList)
 {
-	QStringList newList;
-	for (auto str : list) {
-		bool matchSuccess = false;
+	QMap<QString, CustomFileInfo> newMap;
+	for (auto iter = map.begin(); iter != map.end();iter++) {
 		QRegExp regExp;
 		for (auto reg : regexList) {
 			regExp.setPattern(reg);
 			if(!reg.isValidUtf16())
 				continue;
-			if (regExp.indexIn(str) > 0) {
-				matchSuccess = true;
-				break;//匹配成功
+			if (regExp.indexIn(iter.key()) >= 0) {//匹配ok
+				newMap.insert(iter.key(),iter.value());
 			}
 		}
-		if (matchSuccess) {
-			newList.append(str);
-		}
 	}
-	list=newList;
 }
 
 bool FileMappingOperator::copyFile(QString srcPath, QString dstPath, bool coverFileIfExist)

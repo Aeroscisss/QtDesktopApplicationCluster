@@ -50,7 +50,9 @@ FileMappingRule FileMappingRuleParser::parseRule(QString ruleString)
 	//from:{\".testFile/src\"}\nto:{\".testFile/dst\"}\nfilter:{}
 	FileMappingRule rule;
 	rule.setSrcList(parseUnit("from:", '{', '}', ruleString));
-	rule.setDstList(parseUnit("to:", '{', '}', ruleString));
-	rule.setDstList(parseUnit("filter", '{', '}', ruleString));
+	QStringList dsts = parseUnit("to:", '{', '}', ruleString);
+	if(!dsts.empty())
+		rule.setDst(dsts[0]);
+	rule.setFilterList(parseUnit("filter:", '{', '}', ruleString));
 	return rule;
 }

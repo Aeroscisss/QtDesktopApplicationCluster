@@ -116,6 +116,7 @@
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingTask.cpp" />
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingOperator.cpp" />
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\GlobalMessageRepost.cpp" />
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\GlobalSettings.cpp" />
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +150,7 @@
     <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\FileMappingManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\GlobalSettings.h" />
     <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingPatternWidget.h" />
     <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingTaskWidget.h" />
     <ClInclude Include="..\src\CustomCppToolKit\MultiThreadQueue.h" />

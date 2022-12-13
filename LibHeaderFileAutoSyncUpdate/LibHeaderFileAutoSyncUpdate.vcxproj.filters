@@ -118,6 +118,9 @@
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileMappingTaskWidget.cpp">
       <Filter>Source Files\CustomQWidget</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\GlobalSettings.cpp">
+      <Filter>Source Files\Module</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\CustomQMainWindow.h">
@@ -152,6 +155,9 @@
     </QtMoc>
     <QtMoc Include="..\src\CustomQWidget\assembledQWidget\CustomQLabelEdit.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\GlobalSettings.h">
+      <Filter>Header Files\Module</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

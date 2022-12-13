@@ -1,12 +1,16 @@
 #include "CustomQApp.h"
 #include "CustomQMainWindow.h"
 #include <QString>
+#include "GlobalSettings.h"
 #include "GlobalMessageRepost.h"
 #include "FileMappingManager.h"
+#include "FileMappingOperator.h"
 struct CustomAbstractQApp::AppModule
 {
+	GlobalSettings* globalSettings = nullptr;
 	GlobalMessageRepost* globalMsgRepost = nullptr;
 	FileMappingManager* fileMappingManager = nullptr;
+	FileMappingOperator* fileMappingOperator = nullptr;
 }appModule;
 struct CustomAbstractQApp::AppUi
 {
@@ -37,19 +41,26 @@ bool CustomQApp::initialize()
 
 bool CustomQApp::release()
 {
+	appModule.globalSettings->outputSettingFile();;
 	return true;
 }
 
 void CustomQApp::showIntroWindow()
 {
 	appUi.mainWindow->show();
+	if (!GlobalSettings::Instance().latestRuleFilePath.isEmpty()) {
+		appModule.fileMappingManager->openRuleFile(GlobalSettings::Instance().latestRuleFilePath);
+	}
 }
 
 bool CustomQApp::initModule()
 {
 	try {
+		appModule.globalSettings = &GlobalSettings::Instance();
+		appModule.globalSettings->readSettingFile();
 		appModule.globalMsgRepost = &GlobalMessageRepost::Instance();
 		appModule.fileMappingManager = &FileMappingManager::Instance();
+		appModule.fileMappingOperator= &FileMappingOperator::Instance();
 		return true;
 	}
 	catch (std::exception e) {

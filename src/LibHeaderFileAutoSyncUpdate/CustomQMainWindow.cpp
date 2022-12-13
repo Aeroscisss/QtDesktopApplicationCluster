@@ -8,6 +8,7 @@
 #include "FileMappingManager.h"
 #include "FileMappingRuleParser.h"
 #include "FileMappingRule.h"
+#include "FileMappingOperator.h"
 
 CustomQMainWindow::CustomQMainWindow(QWidget *parent)
     : CustomAbstractQMainWindow(parent)
@@ -126,12 +127,14 @@ void CustomQMainWindow::on_action_printPatternsToConsole_triggered()
 }
 void CustomQMainWindow::on_btn_apply_clicked()
 {
+    FileMappingOperator::Instance().threadLoopRun();
     if (currentPatternWidget != nullptr) {
         FileMappingPattern pattern;
         FileMappingManager::Instance().getPattern(ui.comboBox_paternSelect->currentText(), pattern);
         QList<FileMappingTask>tasks=pattern.getTaskList();
         for (auto task : tasks) {
             FileMappingRule rule=FileMappingRuleParser::Instance().parseRule(task.script());
+            FileMappingOperator::Instance().ruleQueue->push(rule);
         }
     }
 }

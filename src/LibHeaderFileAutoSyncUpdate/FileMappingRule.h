@@ -12,16 +12,15 @@ public:
 	QStringList srcList() { return srcs; }
 	void setSrcList(QStringList list) { srcs = list; }
 	void addSrc(QString src) { srcs.append(src); }
-	QStringList dstList() { return dsts; }
-	void setDstList(QStringList list){ dsts = list; }
-	void addDst(QString src) { srcs.append(src); }
+	QString dst() { return dstFolder; }
+	void setDst(QString dst){ dstFolder = dst; }
 	QStringList filterList() { return filters; }
 	void setFilterList(QStringList list) { filters = list; }
 	void addFilter(QString filter) { filters.append(filter); }
 	bool full() {
 		if (srcs.empty())
 			return false;
-		if (dsts.empty())
+		if (dstFolder.isEmpty())
 			return false;
 		if (filters.empty())
 			return false;
@@ -29,7 +28,7 @@ public:
 	}
 private:
 	QStringList srcs;
-	QStringList dsts;
+	QString dstFolder;
 	QStringList filters;
 };
 

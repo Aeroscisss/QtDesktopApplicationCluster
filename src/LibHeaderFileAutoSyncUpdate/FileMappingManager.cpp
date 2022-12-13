@@ -4,6 +4,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include "CustomQToolKit/QJsonIO.h"
+#include "GlobalSettings.h"
 FileMappingManager& FileMappingManager::Instance() {
 	static std::unique_ptr<FileMappingManager>instance_ptr =
 		std::unique_ptr<FileMappingManager>(new FileMappingManager);
@@ -85,6 +86,7 @@ bool FileMappingManager::openRuleFile(QString filePath)
 			map_fileMappingPattern = patternMap;
 		}
 		currentRuleFilePath = filePath;
+		GlobalSettings::Instance().latestRuleFilePath = filePath;
 		emit sig_fileMappingManager_ruleFileOpened();
 		emit sig_fileMappingManager_patternUpdated();
 	}
@@ -93,6 +95,7 @@ bool FileMappingManager::openRuleFile(QString filePath)
 		GlobalMessageRepost::Instance().sendNewMsg(msg + e.what());
 		return false;
 	}
+	
 	return true;
 }
 void FileMappingManager::printRuleFileToConsole()
