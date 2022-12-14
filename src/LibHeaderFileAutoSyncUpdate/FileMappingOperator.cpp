@@ -14,7 +14,6 @@ FileMappingOperator& FileMappingOperator::Instance()
 FileMappingOperator::FileMappingOperator()
 {
 	threadIsInterrupted = false;
-	//m_thread = std::make_unique< std::thread>();
 	ruleQueue = std::make_unique<MultiThreadQueue<FileMappingRule>>();
 }
 
@@ -73,13 +72,14 @@ void FileMappingOperator::applyRule(FileMappingRule rule)
 			}
 			if (srcFileInfo.md5 != dstFileInfo.md5) {//文件有改变
 				//移动src到dst
-				copyFile(srcFileInfo.filePath, dstFileInfo.filePath,true);
+				copyFile(srcFileInfo.filePath, dst + srcFileInfo.fileCompleteName,true);
 			}
 		}
 		else {//根本不存在
 			copyFile(srcFileInfo.filePath, dst+srcFileInfo.fileCompleteName, true);
 		}
 	}
+	GlobalMessageRepost::Instance().sendNewMsg("Apply Finished");
 }
 
 void FileMappingOperator::convertPathValueIntoFileInfo(QStringList files, QMap<QString, CustomFileInfo>& fileInfoMap)
@@ -117,7 +117,7 @@ void FileMappingOperator::findAllFilesUnderFolder(QString folderPath, QMap<QStri
 		customFileInfo.fileCompleteName = fileInfo.completeBaseName()+"."+ fileInfo.suffix();
 		customFileInfo.fileBaseName = fileInfo.completeBaseName();
 		customFileInfo.fileByteSize = fileInfo.size();
-		fileInfoMap.insert(customFileInfo.filePath, customFileInfo);
+		fileInfoMap.insert(customFileInfo.fileCompleteName, customFileInfo);
 		continue;
 	}
 	QFileInfoList folder_list = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
