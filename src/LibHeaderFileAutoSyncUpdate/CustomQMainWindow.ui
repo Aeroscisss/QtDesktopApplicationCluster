@@ -259,6 +259,8 @@
     <addaction name="action_openFile"/>
     <addaction name="action_saveFile"/>
     <addaction name="action_saveFileAs"/>
+    <addaction name="action_closeFile"/>
+    <addaction name="action_close"/>
    </widget>
    <addaction name="menu_file"/>
    <addaction name="menu_edit"/>
@@ -322,6 +324,16 @@
   <action name="action_printPatternsToConsole">
    <property name="text">
     <string>Print Patterns to Console</string>
+   </property>
+  </action>
+  <action name="action_closeFile">
+   <property name="text">
+    <string>Close File</string>
+   </property>
+  </action>
+  <action name="action_close">
+   <property name="text">
+    <string>Close(&amp;W)</string>
    </property>
   </action>
  </widget>

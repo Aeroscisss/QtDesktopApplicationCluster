@@ -43,10 +43,12 @@ void CustomQMainWindow::rec_refreshPatternContents()
 void CustomQMainWindow::rec_refreshSaveAsAction()
 {
     if (FileMappingManager::Instance().getCurrentRuleFilePath().isEmpty()) {
-        ui.action_saveFile->setVisible(false);
+        ui.action_saveFileAs->setShortcut(QCoreApplication::translate("CustomQMainWindowClass", "Ctrl+S", nullptr));
+        ui.action_saveFile->setShortcut(QKeySequence());
     }
     else {
-        ui.action_saveFile->setVisible(true);
+        ui.action_saveFileAs->setShortcut(QKeySequence());
+        ui.action_saveFile->setShortcut(QCoreApplication::translate("CustomQMainWindowClass", "Ctrl+S", nullptr));
     }
 }
 void CustomQMainWindow::connectSigs()
@@ -61,6 +63,8 @@ void CustomQMainWindow::connectSigs()
 		this, SLOT(rec_refreshPatternContents()));
     connect(this, SIGNAL(sig_requestOpenRuleFile(QString)),
         &FileMappingManager::Instance(), SLOT(rec_openRuleFile(QString)));
+    connect(this,&CustomQMainWindow::sig_requestCloseCurrRuleFile,
+        &FileMappingManager::Instance(), &FileMappingManager::rec_closeCurrRuleFile);
     connect(this, SIGNAL(sig_requestSaveRuleFile(QString)),
         &FileMappingManager::Instance(), SLOT(rec_saveRuleFile(QString)));
     connect(this, SIGNAL(sig_requestCreateNewPattern(QString)),
@@ -177,6 +181,14 @@ void CustomQMainWindow::on_action_saveFileAs_triggered()
     {
         GlobalMessageRepost::Instance().sendNewMsg("Cancel Save Sync Rule File");
     }
+}
+void CustomQMainWindow::on_action_closeFile_triggered()
+{
+    emit sig_requestCloseCurrRuleFile();
+}
+void CustomQMainWindow::on_action_close_triggered()
+{
+    qApp->quit();
 }
 void CustomQMainWindow::on_action_createNewPattern_triggered() {
 	bool ok=false;

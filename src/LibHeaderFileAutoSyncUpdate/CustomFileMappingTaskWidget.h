@@ -18,6 +18,7 @@ public:
 	void setTaskMarkNum(int num);
 signals:
 	void sig_taskWidget_taskChanged();
+	void sig_taskWidget_requestDelete();
 private:
 	Ui::CustomFileMappingTaskWidgetClass ui;
 	CustomQLabelEdit* label_taskName;

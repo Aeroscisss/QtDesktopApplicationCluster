@@ -37,6 +37,8 @@ void CustomFileMappingPatternWidget::initWidget(FileMappingPattern& pattern)
 		CustomFileMappingTaskWidget* taskWidget = new CustomFileMappingTaskWidget(*iter, this);
 		connect(taskWidget, &CustomFileMappingTaskWidget::sig_taskWidget_taskChanged,
 			this, &CustomFileMappingPatternWidget::rec_updatePattern);
+		connect(taskWidget, &CustomFileMappingTaskWidget::sig_taskWidget_requestDelete,
+			this, &CustomFileMappingPatternWidget::rec_deleteTask);
 		taskWidgetList.append(taskWidget);
 		ui.gridLayout_tasks->addWidget(taskWidget);
 		taskWidget->setTaskMarkNum(i + 1);
@@ -64,6 +66,18 @@ void CustomFileMappingPatternWidget::rec_updatePattern()
 	taskChanged = true;//task更新标志
 	updateTimer->start();//开始计时
 }
+void CustomFileMappingPatternWidget::rec_deleteTask()
+{
+	CustomFileMappingTaskWidget* taskWidget = reinterpret_cast<CustomFileMappingTaskWidget*> (sender());
+	if (taskWidgetList.removeOne(taskWidget)) {
+		GlobalMessageRepost::Instance().sendNewMsg("Task removed", 1);
+		taskWidget->deleteLater();
+		//GlobalMessageRepost::Instance().sendNewMsg("size = "+QString::number(taskWidgetList.size()), 1);
+	}
+	else {
+		GlobalMessageRepost::Instance().sendNewMsg("Fail removing Task", 1);
+	}
+}
 void CustomFileMappingPatternWidget::rec_timerForcedUpdatePattern()
 {
 	if (taskChanged) {
@@ -81,6 +95,8 @@ void CustomFileMappingPatternWidget::on_btn_addTask_clicked()
 	CustomFileMappingTaskWidget* taskWidget = new CustomFileMappingTaskWidget(FileMappingTask(), this);
 	connect(taskWidget, &CustomFileMappingTaskWidget::sig_taskWidget_taskChanged,
 		this, &CustomFileMappingPatternWidget::rec_updatePattern); 
+	connect(taskWidget, &CustomFileMappingTaskWidget::sig_taskWidget_requestDelete,
+		this, &CustomFileMappingPatternWidget::rec_deleteTask);
 	taskWidget->setTaskMarkNum(taskWidgetList.size()+1);
 	taskWidgetList.append(taskWidget);
 	ui.gridLayout_tasks->addWidget(taskWidget);

@@ -41,7 +41,8 @@ bool CustomQApp::initialize()
 
 bool CustomQApp::release()
 {
-	appModule.globalSettings->outputSettingFile();;
+	appModule.fileMappingOperator->threadIsInterrupted = true;
+	appModule.globalSettings->outputSettingFile();
 	return true;
 }
 

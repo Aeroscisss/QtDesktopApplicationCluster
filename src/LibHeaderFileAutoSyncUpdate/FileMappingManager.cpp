@@ -98,6 +98,13 @@ bool FileMappingManager::openRuleFile(QString filePath)
 	
 	return true;
 }
+void FileMappingManager::closeCurrRuleFile()
+{
+	std::lock_guard<std::mutex>locker(mutex_fileMappingPatern);
+	map_fileMappingPattern.clear();
+	currentRuleFilePath.clear();
+	emit sig_fileMappingManager_patternUpdated();
+}
 void FileMappingManager::printRuleFileToConsole()
 {
 	std::lock_guard<std::mutex>locker(mutex_fileMappingPatern);
@@ -210,6 +217,11 @@ bool FileMappingManager::applyPattern(QString)
 
 void FileMappingManager::rec_openRuleFile(QString path) {
 	openRuleFile(path);
+}
+
+void FileMappingManager::rec_closeCurrRuleFile()
+{
+	closeCurrRuleFile();
 }
 
 void FileMappingManager::rec_saveRuleFile(QString path)

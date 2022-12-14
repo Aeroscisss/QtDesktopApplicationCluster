@@ -13,7 +13,7 @@ FileMappingOperator& FileMappingOperator::Instance()
 
 FileMappingOperator::FileMappingOperator()
 {
-	threadIsInterrupted = false;
+	threadIsInterrupted = true;
 	ruleQueue = std::make_unique<MultiThreadQueue<FileMappingRule>>();
 }
 
@@ -22,22 +22,28 @@ FileMappingOperator::~FileMappingOperator()
 	threadIsInterrupted = true;
 	if(m_thread.joinable())
 		m_thread.join();
+	GlobalMessageRepost::Instance().sendNewMsg("FileMappingOperator is deleted",1);
 }
 
 void FileMappingOperator::threadLoopRun()
 {
-	threadIsInterrupted = false;
-	m_thread = std::thread(&ruleOpLoop);
+	if (threadIsInterrupted == true) {
+		threadIsInterrupted = false;
+		m_thread = std::thread(&ruleOpLoop);
+	}
 }
 
 void FileMappingOperator::ruleOpLoop()
 {
+	FileMappingRule rule;
 	while (!FileMappingOperator::Instance().threadIsInterrupted)
 	{
-		GlobalMessageRepost::Instance().sendNewMsg("new loop",1);
-		FileMappingRule rule;
-		FileMappingOperator::Instance().ruleQueue->wait(rule);
-		FileMappingOperator::Instance().applyRule(rule);
+		if (FileMappingOperator::Instance().ruleQueue->poll(rule)) {
+			GlobalMessageRepost::Instance().sendNewMsg("try apply new rule", 1);
+			FileMappingOperator::Instance().applyRule(rule);
+			GlobalMessageRepost::Instance().sendNewMsg("new rule applied", 1);
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		}
 	}
 }
 

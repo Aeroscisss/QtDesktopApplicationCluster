@@ -28,5 +28,6 @@ private:
 private slots:
 	void on_btn_addTask_clicked();
 	void rec_updatePattern();
+	void rec_deleteTask();
 	void rec_timerForcedUpdatePattern();
 };

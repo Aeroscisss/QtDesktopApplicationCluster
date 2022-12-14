@@ -17,10 +17,12 @@ public:
 	bool updatePattern(QString PatternName,FileMappingPattern &Pattern);
 	bool saveRuleFile(QString filePath);
 	bool openRuleFile(QString filePath);
+	void closeCurrRuleFile();
 	void printRuleFileToConsole();
 	QString getCurrentRuleFilePath();
 public slots:
 	void rec_openRuleFile(QString);
+	void rec_closeCurrRuleFile();
 	void rec_saveRuleFile(QString);
 	void rec_createNewPattern(QString);
 	void rec_deletePattern(QString);

@@ -1,6 +1,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <queue>
+#include <iostream>
 /// <summary>
 /// 消息队列
 /// </summary>
@@ -23,17 +24,22 @@ public:
 	}
 	void wait(T& object) {/// 等待消息
 		std::unique_lock<std::mutex>lck(_mtx);
-		while (!_queue.size()) 
+		while (!_queue.size()) {
+			std::cout << "start waiting" << std::endl;
 			_cv.wait(lck);
-		object = _queue.front();
-		_queue.pop();
+		}
+		std::cout << "wait finished" << std::endl;
+		if (!_queue.empty()) {
+			object = _queue.front();
+			_queue.pop();
+		}
 	}
 	size_t size() {//队列长度
 		std::unique_lock<std::mutex>lck(_mtx);
 		return _queue.size();
 	}
 private:
-	std::queue<T> _queue;//队列
-	std::mutex _mtx;//互斥变量
-	std::condition_variable _cv;//条件变量
+	std::queue<T> _queue;
+	std::mutex _mtx;
+	std::condition_variable _cv;
 };

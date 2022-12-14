@@ -22,6 +22,7 @@ public slots:
     void rec_refreshSaveAsAction();
 signals:
     void sig_requestOpenRuleFile(QString filePath);
+    void sig_requestCloseCurrRuleFile();
     void sig_requestSaveRuleFile(QString filePath);
     void sig_requestCreateNewPattern(QString patternName);
     void sig_requestDeletePattern(QString patternName);
@@ -40,6 +41,8 @@ private slots:
     void on_action_openFile_triggered();
     void on_action_saveFile_triggered();
     void on_action_saveFileAs_triggered();
+    void on_action_closeFile_triggered();
+    void on_action_close_triggered();
     void on_action_createNewPattern_triggered();
     void on_action_delCurrPattern_triggered();
     void on_action_printPatternsToConsole_triggered();

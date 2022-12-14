@@ -33,5 +33,5 @@ void CustomFileMappingTaskWidget::rec_updateTask() {
 	emit sig_taskWidget_taskChanged();
 }
 void CustomFileMappingTaskWidget::on_btn_delTask_clicked() {
-
+	emit sig_taskWidget_requestDelete();
 }

@@ -6,6 +6,7 @@
 #include <Thread>
 #include <memory>
 #include <mutex>
+#include <atomic>
 #include "CustomCppToolKit/MultiThreadQueue.h"
 class FileMappingOperator
 {
@@ -14,7 +15,7 @@ public:
 	~FileMappingOperator();
 	std::unique_ptr<MultiThreadQueue<FileMappingRule> >ruleQueue;
 	void threadLoopRun();
-	bool threadIsInterrupted=false;
+	std::atomic<bool> threadIsInterrupted;
 private:
 	struct CustomFileInfo {
 		CustomFileInfo() {}
