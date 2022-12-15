@@ -1,17 +1,17 @@
-#include "FileMappingRuleParser.h"
+#include "FileSyncRuleParser.h"
 #include <memory>
-FileMappingRuleParser& FileMappingRuleParser::Instance() {
-	static std::unique_ptr<FileMappingRuleParser>instance_ptr =
-		std::unique_ptr<FileMappingRuleParser>(new FileMappingRuleParser);
+FileSyncRuleParser& FileSyncRuleParser::Instance() {
+	static std::unique_ptr<FileSyncRuleParser>instance_ptr =
+		std::unique_ptr<FileSyncRuleParser>(new FileSyncRuleParser);
 	return *instance_ptr;
 }
-FileMappingRuleParser::FileMappingRuleParser() {
+FileSyncRuleParser::FileSyncRuleParser() {
 
 }
-FileMappingRuleParser::~FileMappingRuleParser() {
+FileSyncRuleParser::~FileSyncRuleParser() {
 
 }
-QStringList FileMappingRuleParser::parseUnit(QString header, QChar startSignChar, QChar endSignChar, QString target)
+QStringList FileSyncRuleParser::parseUnit(QString header, QChar startSignChar, QChar endSignChar, QString target)
 {
 	QStringList pathList;
 	int headerPos = target.indexOf(header);//找到开头
@@ -45,10 +45,10 @@ QStringList FileMappingRuleParser::parseUnit(QString header, QChar startSignChar
 	return pathList;
 }
 
-FileMappingRule FileMappingRuleParser::parseRule(QString ruleString)
+FileSyncRule FileSyncRuleParser::parseRule(QString ruleString)
 {
 	//from:{\".testFile/src\"}\nto:{\".testFile/dst\"}\nfilter:{}
-	FileMappingRule rule;
+	FileSyncRule rule;
 	rule.setSrcList(parseUnit("from:", '{', '}', ruleString));
 	QStringList dsts = parseUnit("to:", '{', '}', ruleString);
 	if(!dsts.empty())

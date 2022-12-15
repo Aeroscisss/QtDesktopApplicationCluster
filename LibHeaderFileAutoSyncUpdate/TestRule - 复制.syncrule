@@ -12,6 +12,15 @@
                     "taskName": "P1T2"
                 }
             ]
+        },
+        {
+            "patternName": "TestPattern2",
+            "taskList": [
+                {
+                    "rawScript": "from:{\"./testFile/src3\"}\nto:{\"./testFile/dst3\"}\nfilter:{\".h\",\".cpp\"}",
+                    "taskName": "T2P1"
+                }
+            ]
         }
     ]
 }

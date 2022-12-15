@@ -1,4 +1,4 @@
-﻿#ifdef PI_USE_PCH
+#ifdef PI_USE_PCH
 #include "pch.h"
 #endif
 #include <QJsonArray>

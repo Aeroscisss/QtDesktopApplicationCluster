@@ -6,7 +6,7 @@
 #include <QString>
 #include "CustomQObject/CustomAbstractQMainWindow.h"
 #include "CustomQWidget/CustomMsgBrowserWidget.h"
-#include "CustomFileMappingPatternWidget.h"
+#include "CustomFileSyncPatternWidget.h"
 #include "ui_CustomQMainWindow.h"
 
 class CustomQMainWindow : public CustomAbstractQMainWindow
@@ -17,9 +17,11 @@ public:
     CustomQMainWindow(QWidget *parent = nullptr);
     ~CustomQMainWindow();
 public slots:
+    void rec_resetPatterns();
     void rec_refreshPatterns();
     void rec_refreshPatternContents();
     void rec_refreshSaveAsAction();
+    void rec_updateTitle();
 signals:
     void sig_requestOpenRuleFile(QString filePath);
     void sig_requestCloseCurrRuleFile();
@@ -35,8 +37,8 @@ private:
 private:
     CustomMsgBrowserWidget* msgBrowser = nullptr;
     QStackedWidget* stackedWidget_pattern = nullptr;
-    QMap<QString ,CustomFileMappingPatternWidget*>map_patternWidget;
-    CustomFileMappingPatternWidget* currentPatternWidget = nullptr;
+    QMap<QString ,CustomFileSyncPatternWidget*>map_patternWidget;
+    CustomFileSyncPatternWidget* currentPatternWidget = nullptr;
 private slots:
     void on_action_openFile_triggered();
     void on_action_saveFile_triggered();

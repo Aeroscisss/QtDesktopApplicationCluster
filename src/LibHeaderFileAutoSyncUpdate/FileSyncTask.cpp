@@ -1,9 +1,9 @@
-#include "FileMappingTask.h"
+#include "FileSyncTask.h"
 #include <QJsonValue>
-FileMappingTask::FileMappingTask()
+FileSyncTask::FileSyncTask()
 {
 }
-FileMappingTask::FileMappingTask(QJsonObject obj)
+FileSyncTask::FileSyncTask(QJsonObject obj)
 {
 	if (obj.contains("taskName")) {
 		QJsonValue name = obj.value("taskName");
@@ -18,44 +18,44 @@ FileMappingTask::FileMappingTask(QJsonObject obj)
 		}
 	}
 }
-FileMappingTask::FileMappingTask(const FileMappingTask&o)
+FileSyncTask::FileSyncTask(const FileSyncTask&o)
 {
 	m_name = o.m_name;
 	m_rawScript = o.m_rawScript;
 }
-FileMappingTask::FileMappingTask(FileMappingTask&& o)noexcept
+FileSyncTask::FileSyncTask(FileSyncTask&& o)noexcept
 {
 	m_name = o.m_name;
 	m_rawScript = o.m_rawScript;
 }
-FileMappingTask& FileMappingTask::operator=(const FileMappingTask&o)
+FileSyncTask& FileSyncTask::operator=(const FileSyncTask&o)
 {
 	m_name = o.m_name;
 	m_rawScript = o.m_rawScript;
 	return *this;
 }
 
-QString FileMappingTask::name()
+QString FileSyncTask::name()
 {
 	return m_name;
 }
 
-void FileMappingTask::setName(QString name)
+void FileSyncTask::setName(QString name)
 {
 	m_name = name;
 }
 
-QString FileMappingTask::script()
+QString FileSyncTask::script()
 {
 	return m_rawScript;
 }
 
-void FileMappingTask::setScript(QString script)
+void FileSyncTask::setScript(QString script)
 {
 	m_rawScript = script;
 }
 
-QJsonObject FileMappingTask::toJsonObj()
+QJsonObject FileSyncTask::toJsonObj()
 {
 	QJsonObject obj;
 	obj.insert("taskName", m_name);
@@ -63,7 +63,7 @@ QJsonObject FileMappingTask::toJsonObj()
 	return obj;
 }
 
-QString FileMappingTask::toConsoleString()
+QString FileSyncTask::toConsoleString()
 {
 	QString out;
 	out += "----|TaskName[" + m_name + "]:\n";
@@ -76,7 +76,7 @@ QString FileMappingTask::toConsoleString()
 	return out;
 }
 
-QString FileMappingTask::toString()
+QString FileSyncTask::toString()
 {
 	QString out;
 	out+="TaskName["+m_name+"]:";

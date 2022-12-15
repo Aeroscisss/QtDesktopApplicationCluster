@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <QMainWindow>
 #include <QDebug>
@@ -10,6 +10,5 @@ class CustomAbstractQMainWindow : public QMainWindow
 public:
 	CustomAbstractQMainWindow(QWidget *parent = nullptr);
 	~CustomAbstractQMainWindow();
-
 private:
 };

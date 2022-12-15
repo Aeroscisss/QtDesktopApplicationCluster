@@ -2,13 +2,13 @@
 #include <QString>
 #include <QList>
 #include <QStringList>
-class FileMappingRule
+class FileSyncRule
 {
 public:
-	FileMappingRule(){}
-	~FileMappingRule()=default;
-	FileMappingRule(const FileMappingRule&) = default;
-	FileMappingRule& operator=(const FileMappingRule&) = default;
+	FileSyncRule(){}
+	~FileSyncRule()=default;
+	FileSyncRule(const FileSyncRule&) = default;
+	FileSyncRule& operator=(const FileSyncRule&) = default;
 	QStringList srcList() { return srcs; }
 	void setSrcList(QStringList list) { srcs = list; }
 	void addSrc(QString src) { srcs.append(src); }
@@ -25,6 +25,22 @@ public:
 		if (filters.empty())
 			return false;
 		return true;
+	}
+	std::string toString() {
+		QString result;
+		result += "Rule:\n";
+		result += "Src:{\n";
+		for (QString src : srcs) {
+			result += "  " + src + "\n";
+		}
+		result += "}\n";
+		result += "Dst:";
+		result += dstFolder+"\n";
+		result += "filters:{\n";
+		for (QString filter : filters) {
+			result += "  " + filter + "\n";
+		}
+		result += "}\n";
 	}
 private:
 	QStringList srcs;

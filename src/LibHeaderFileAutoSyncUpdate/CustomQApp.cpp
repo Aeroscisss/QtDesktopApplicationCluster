@@ -3,14 +3,14 @@
 #include <QString>
 #include "GlobalSettings.h"
 #include "GlobalMessageRepost.h"
-#include "FileMappingManager.h"
-#include "FileMappingOperator.h"
+#include "FileSyncManager.h"
+#include "FileSyncOperator.h"
 struct CustomAbstractQApp::AppModule
 {
 	GlobalSettings* globalSettings = nullptr;
 	GlobalMessageRepost* globalMsgRepost = nullptr;
-	FileMappingManager* fileMappingManager = nullptr;
-	FileMappingOperator* fileMappingOperator = nullptr;
+	FileSyncManager* fileSyncManager = nullptr;
+	FileSyncOperator* fileSyncOperator = nullptr;
 }appModule;
 struct CustomAbstractQApp::AppUi
 {
@@ -41,7 +41,7 @@ bool CustomQApp::initialize()
 
 bool CustomQApp::release()
 {
-	appModule.fileMappingOperator->threadIsInterrupted = true;
+	appModule.fileSyncOperator->threadIsInterrupted = true;
 	appModule.globalSettings->outputSettingFile();
 	return true;
 }
@@ -50,7 +50,7 @@ void CustomQApp::showIntroWindow()
 {
 	appUi.mainWindow->show();
 	if (!GlobalSettings::Instance().latestRuleFilePath.isEmpty()) {
-		appModule.fileMappingManager->openRuleFile(GlobalSettings::Instance().latestRuleFilePath);
+		appModule.fileSyncManager->openRuleFile(GlobalSettings::Instance().latestRuleFilePath);
 	}
 }
 
@@ -60,8 +60,8 @@ bool CustomQApp::initModule()
 		appModule.globalSettings = &GlobalSettings::Instance();
 		appModule.globalSettings->readSettingFile();
 		appModule.globalMsgRepost = &GlobalMessageRepost::Instance();
-		appModule.fileMappingManager = &FileMappingManager::Instance();
-		appModule.fileMappingOperator= &FileMappingOperator::Instance();
+		appModule.fileSyncManager = &FileSyncManager::Instance();
+		appModule.fileSyncOperator= &FileSyncOperator::Instance();
 		return true;
 	}
 	catch (std::exception e) {

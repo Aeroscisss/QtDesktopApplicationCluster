@@ -1,31 +1,31 @@
-#include "FileMappingOperator.h"
+#include "FileSyncOperator.h"
 #include <memory>
 #include <QCryptographicHash>
 #include <QTextStream>
 #include <QDir>
 #include "QFileInfo"
 #include "GlobalMessageRepost.h"
-FileMappingOperator& FileMappingOperator::Instance()
+FileSyncOperator& FileSyncOperator::Instance()
 {
-	static std::unique_ptr<FileMappingOperator>instance_ptr=std::unique_ptr<FileMappingOperator>(new FileMappingOperator);
+	static std::unique_ptr<FileSyncOperator>instance_ptr=std::unique_ptr<FileSyncOperator>(new FileSyncOperator);
 	return *instance_ptr;
 }
 
-FileMappingOperator::FileMappingOperator()
+FileSyncOperator::FileSyncOperator()
 {
 	threadIsInterrupted = true;
-	ruleQueue = std::make_unique<MultiThreadQueue<FileMappingRule>>();
+	ruleQueue = std::make_unique<MultiThreadQueue<FileSyncRule>>();
 }
 
-FileMappingOperator::~FileMappingOperator()
+FileSyncOperator::~FileSyncOperator()
 {
 	threadIsInterrupted = true;
 	if(m_thread.joinable())
 		m_thread.join();
-	GlobalMessageRepost::Instance().sendNewMsg("FileMappingOperator is deleted",1);
+	GlobalMessageRepost::Instance().sendNewMsg("FileSyncOperator is deleted",1);
 }
 
-void FileMappingOperator::threadLoopRun()
+void FileSyncOperator::threadLoopRun()
 {
 	if (threadIsInterrupted == true) {
 		threadIsInterrupted = false;
@@ -33,21 +33,21 @@ void FileMappingOperator::threadLoopRun()
 	}
 }
 
-void FileMappingOperator::ruleOpLoop()
+void FileSyncOperator::ruleOpLoop()
 {
-	FileMappingRule rule;
-	while (!FileMappingOperator::Instance().threadIsInterrupted)
+	FileSyncRule rule;
+	while (!FileSyncOperator::Instance().threadIsInterrupted)
 	{
-		if (FileMappingOperator::Instance().ruleQueue->poll(rule)) {
+		if (FileSyncOperator::Instance().ruleQueue->poll(rule)) {
 			GlobalMessageRepost::Instance().sendNewMsg("try apply new rule", 1);
-			FileMappingOperator::Instance().applyRule(rule);
+			FileSyncOperator::Instance().applyRule(rule);
 			GlobalMessageRepost::Instance().sendNewMsg("new rule applied", 1);
 			std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		}
 	}
 }
 
-void FileMappingOperator::applyRule(FileMappingRule rule)
+void FileSyncOperator::applyRule(FileSyncRule rule)
 {
 	QStringList filters = rule.filterList();//获取正则匹配列表
 	QStringList srcs = rule.srcList();//获取源值列表
@@ -85,10 +85,10 @@ void FileMappingOperator::applyRule(FileMappingRule rule)
 			copyFile(srcFileInfo.filePath, dst+srcFileInfo.fileCompleteName, true);
 		}
 	}
-	GlobalMessageRepost::Instance().sendNewMsg("Apply Finished");
+	GlobalMessageRepost::Instance().sendNewMsg("Apply Rule Finished");
 }
 
-void FileMappingOperator::convertPathValueIntoFileInfo(QStringList files, QMap<QString, CustomFileInfo>& fileInfoMap)
+void FileSyncOperator::convertPathValueIntoFileInfo(QStringList files, QMap<QString, CustomFileInfo>& fileInfoMap)
 {
 	QMap<QString, CustomFileInfo> newMap;
 	QFileInfo fileInfo;
@@ -113,7 +113,7 @@ void FileMappingOperator::convertPathValueIntoFileInfo(QStringList files, QMap<Q
 	}
 }
 
-void FileMappingOperator::findAllFilesUnderFolder(QString folderPath, QMap<QString, CustomFileInfo>& fileInfoMap)
+void FileSyncOperator::findAllFilesUnderFolder(QString folderPath, QMap<QString, CustomFileInfo>& fileInfoMap)
 {
 		QDir dir(folderPath);
 	QFileInfoList file_list = dir.entryInfoList(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
@@ -136,7 +136,7 @@ void FileMappingOperator::findAllFilesUnderFolder(QString folderPath, QMap<QStri
 
 
 
-QString FileMappingOperator::smallFileMd5(QString path)
+QString FileSyncOperator::smallFileMd5(QString path)
 {
 	QFile file(path);
 	QTextStream in(&file);
@@ -153,7 +153,7 @@ QString FileMappingOperator::smallFileMd5(QString path)
 	return  str;
 }
 
-QString FileMappingOperator::bigFileMd5(QString path)
+QString FileSyncOperator::bigFileMd5(QString path)
 {
 	QString str;
 	QFile localFile(path);
@@ -197,7 +197,7 @@ QString FileMappingOperator::bigFileMd5(QString path)
 	return  str;
 }
 
-void FileMappingOperator::regexCheck(QMap<QString, CustomFileInfo>& map, QStringList regexList)
+void FileSyncOperator::regexCheck(QMap<QString, CustomFileInfo>& map, QStringList regexList)
 {
 	QMap<QString, CustomFileInfo> newMap;
 	for (auto iter = map.begin(); iter != map.end();iter++) {
@@ -213,7 +213,7 @@ void FileMappingOperator::regexCheck(QMap<QString, CustomFileInfo>& map, QString
 	}
 }
 
-bool FileMappingOperator::copyFile(QString srcPath, QString dstPath, bool coverFileIfExist)
+bool FileSyncOperator::copyFile(QString srcPath, QString dstPath, bool coverFileIfExist)
 {
 	srcPath.replace("\\", "/");
 	dstPath.replace("\\", "/");

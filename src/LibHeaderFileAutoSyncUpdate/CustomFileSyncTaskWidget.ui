@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CustomFileSyncPatternWidgetClass</class>
- <widget class="QWidget" name="CustomFileSyncPatternWidgetClass">
+ <class>CustomFileSyncTaskWidgetClass</class>
+ <widget class="QWidget" name="CustomFileSyncTaskWidgetClass">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>565</width>
-    <height>520</height>
+    <width>545</width>
+    <height>291</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Pattern</string>
+   <string>Task</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_main">
+  <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
     <number>3</number>
    </property>
@@ -30,33 +30,19 @@
     <number>3</number>
    </property>
    <item row="1" column="0">
-    <widget class="QFrame" name="frame_tasks">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_tasks"/>
-    </widget>
+    <widget class="QTextEdit" name="textEdit_taskScript"/>
    </item>
    <item row="0" column="0">
-    <widget class="QFrame" name="frame_patternHeader">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+    <widget class="QFrame" name="frame_taskHeader">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout_patternHeader">
+     <layout class="QGridLayout" name="gridLayout_header">
       <property name="leftMargin">
-       <number>3</number>
+       <number>0</number>
       </property>
       <property name="topMargin">
        <number>3</number>
@@ -65,8 +51,54 @@
        <number>3</number>
       </property>
       <property name="bottomMargin">
-       <number>3</number>
+       <number>0</number>
       </property>
+      <item row="0" column="1">
+       <widget class="QFrame" name="frame_taskName">
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_taskName">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLCDNumber" name="lcdNumber">
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <property name="lineWidth">
+         <number>1</number>
+        </property>
+        <property name="digitCount">
+         <number>2</number>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="2">
        <spacer name="horizontalSpacer">
         <property name="orientation">
@@ -80,33 +112,14 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_patternName">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>PatternName</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="3">
-       <widget class="QPushButton" name="btn_addTask">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>30</height>
-         </size>
-        </property>
+       <widget class="QPushButton" name="btn_delTask">
         <property name="text">
          <string/>
         </property>
         <property name="icon">
          <iconset resource="../../LibHeaderFileAutoSyncUpdate/resource.qrc">
-          <normaloff>:/assets/image/add_black.png</normaloff>:/assets/image/add_black.png</iconset>
+          <normaloff>:/assets/image/redCross.png</normaloff>:/assets/image/redCross.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -114,18 +127,8 @@
           <height>20</height>
          </size>
         </property>
-        <property name="default">
-         <bool>false</bool>
-        </property>
         <property name="flat">
          <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="label_taskAmount">
-        <property name="text">
-         <string>TaskAmount</string>
         </property>
        </widget>
       </item>

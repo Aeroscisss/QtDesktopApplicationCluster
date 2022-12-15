@@ -1,4 +1,4 @@
-﻿#include "GlobalMessageRepost.h"
+#include "GlobalMessageRepost.h"
 #include <memory>
 #include <iostream>
 using namespace std;

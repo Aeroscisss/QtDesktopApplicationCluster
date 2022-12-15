@@ -1,10 +1,10 @@
-#include "FileMappingPattern.h"
+#include "FileSyncPattern.h"
 #include <QJsonArray>
-FileMappingPattern::FileMappingPattern() {
+FileSyncPattern::FileSyncPattern() {
 
 }
 
-FileMappingPattern::FileMappingPattern(QJsonObject obj)
+FileSyncPattern::FileSyncPattern(QJsonObject obj)
 {
 	if (obj.contains("patternName")) {
 		QJsonValue name = obj["patternName"];
@@ -15,53 +15,67 @@ FileMappingPattern::FileMappingPattern(QJsonObject obj)
 		QJsonArray taskList = taskList_v.toArray();
 		std::lock_guard<std::mutex>locker(mutex_tasks);
 		for(auto iter=taskList.begin();iter!=taskList.end();iter++){
-			list_task.append(FileMappingTask(iter->toObject()));
+			list_task.append(FileSyncTask(iter->toObject()));
 		}
 	}
 }
 
-FileMappingPattern::FileMappingPattern(QString patternName)
+FileSyncPattern::FileSyncPattern(QString patternName)
 	:m_patternName(patternName)
 {
 }
-FileMappingPattern::FileMappingPattern(const FileMappingPattern&o){
+FileSyncPattern::FileSyncPattern(const FileSyncPattern&o){
 	m_patternName = o.m_patternName;
 	list_task = o.list_task;
 }
-FileMappingPattern::FileMappingPattern(FileMappingPattern&&o)noexcept
+FileSyncPattern::FileSyncPattern(FileSyncPattern&&o)noexcept
 {
 	m_patternName =o.m_patternName;
 	list_task.swap(o.list_task);
 }
-FileMappingPattern& FileMappingPattern::operator=(const FileMappingPattern&o)
+FileSyncPattern& FileSyncPattern::operator=(const FileSyncPattern&o)
 {
 	m_patternName = o.m_patternName;
 	list_task = o.list_task;
 	return *this;
 }
 
-QList<FileMappingTask>  FileMappingPattern::getTaskList()
+QList<FileSyncTask>  FileSyncPattern::getTaskList()
 {
 	return list_task;
 }
 
-QString FileMappingPattern::name()
+QString FileSyncPattern::name()
 {
 	return m_patternName;
 }
 
-void FileMappingPattern::setName(QString name)
+void FileSyncPattern::setName(QString name)
 {
 	m_patternName = name;
 }
 
-void FileMappingPattern::updateTaskList(QList<FileMappingTask>& list)
+void FileSyncPattern::updateTaskList(QList<FileSyncTask>& list)
 {
 	std::lock_guard<std::mutex>locker(mutex_tasks);
 	list_task = list;
 }
 
-QJsonObject FileMappingPattern::toJsonObj()
+void FileSyncPattern::addTask(FileSyncTask task)
+{
+	std::lock_guard<std::mutex>locker(mutex_tasks);
+	list_task.append(task);
+}
+
+void FileSyncPattern::removeTask(int index)
+{
+	std::lock_guard<std::mutex>locker(mutex_tasks);
+	if (index>0 && index<list_task.size()) {
+		list_task.removeAt(index);
+	}
+}
+
+QJsonObject FileSyncPattern::toJsonObj()
 {
 	QJsonObject obj;
 	QJsonArray taskList;
@@ -74,7 +88,7 @@ QJsonObject FileMappingPattern::toJsonObj()
 	return obj;
 }
 
-QString FileMappingPattern::toConsoleString()
+QString FileSyncPattern::toConsoleString()
 {
 	QString out;
 	out += "PatternName[" + m_patternName + "]:\n";
@@ -86,7 +100,7 @@ QString FileMappingPattern::toConsoleString()
 	return out;
 }
 
-QString FileMappingPattern::toString()
+QString FileSyncPattern::toString()
 {
 	QString out;
 	out += "PatternName[" +m_patternName + "]:";

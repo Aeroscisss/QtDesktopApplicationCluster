@@ -1,4 +1,4 @@
-﻿#include "CustomAbstractQWidget.h"
+#include "CustomAbstractQWidget.h"
 
 CustomAbstractQWidget::CustomAbstractQWidget(QWidget *parent)
 	: QWidget(parent)

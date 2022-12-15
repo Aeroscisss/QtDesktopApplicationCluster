@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <QWidget>
 #include <QDebug>
 #include <vector>
@@ -15,5 +15,5 @@ protected:
 	virtual void retranslate();
 private:
 	std::mutex mutex_subWidgetVec;
-	std::vector<CustomAbstractQWidget*>subWidgetVec;//涓嶈礋璐ｉ噴鏀�
+	std::vector<CustomAbstractQWidget*>subWidgetVec;//
 };

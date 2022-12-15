@@ -1,60 +1,57 @@
-#include "FileMappingManager.h"
-#include "FileMappingPattern.h"
+#include "FileSyncManager.h"
+#include "FileSyncPattern.h"
 #include "GlobalMessageRepost.h"
 #include <QJsonDocument>
 #include <QJsonArray>
 #include "CustomQToolKit/QJsonIO.h"
 #include "GlobalSettings.h"
-FileMappingManager& FileMappingManager::Instance() {
-	static std::unique_ptr<FileMappingManager>instance_ptr =
-		std::unique_ptr<FileMappingManager>(new FileMappingManager);
+FileSyncManager& FileSyncManager::Instance() {
+	static std::unique_ptr<FileSyncManager>instance_ptr =
+		std::unique_ptr<FileSyncManager>(new FileSyncManager);
 	return *instance_ptr;
 }
-FileMappingManager::FileMappingManager() {
+FileSyncManager::FileSyncManager() {
+	this->setObjectName("FileSyncManager");
+}
+FileSyncManager::~FileSyncManager() {
 
 }
-FileMappingManager::~FileMappingManager() {
-
-}
-QString FileMappingManager::newPatternNameSuggestion()
+QString FileSyncManager::newPatternNameSuggestion()
 {
 	QString nameBase = "New Pattern ";
 	QString name;
 	bool breakFlag = false;
 	for (int i = 1; !breakFlag; i++) {
 		name = nameBase + QString::number(i);
-		if (!map_fileMappingPattern.contains(name)) {
+		if (!map_fileSyncPattern.contains(name)) {
 			breakFlag = true;
 		}
 	}
 	return name;
 }
-bool FileMappingManager::getPattern(QString patternName, FileMappingPattern&pattern)
+bool FileSyncManager::getPattern(QString patternName, FileSyncPattern&pattern)
 {
-	std::lock_guard<std::mutex>locker(mutex_fileMappingPatern);
-	auto iter = map_fileMappingPattern.find(patternName);
-	if(iter==map_fileMappingPattern.end())
+	auto iter = map_fileSyncPattern.find(patternName);
+	if(iter==map_fileSyncPattern.end())
 		return false;
 	pattern = iter.value();
 	return true;
 }
-QStringList FileMappingManager::getPatternNames()
+QStringList FileSyncManager::getPatternNames()
 {
-	std::lock_guard<std::mutex>locker(mutex_fileMappingPatern);
 	QStringList list;
-	for(auto iter=map_fileMappingPattern.begin();iter!=map_fileMappingPattern.end();iter++){
+	for(auto iter=map_fileSyncPattern.begin();iter!=map_fileSyncPattern.end();iter++){
 		list.append(iter.key());
 	}
 	return list;
 }
-bool FileMappingManager::updatePattern(QString patternName, FileMappingPattern& pattern)
+bool FileSyncManager::updatePattern(QString patternName, FileSyncPattern& pattern)
 {
 	try {
-		std::lock_guard<std::mutex>locker(mutex_fileMappingPatern);
-		auto iter = map_fileMappingPattern.find(patternName);
-		if (iter == map_fileMappingPattern.end())
+		auto iter = map_fileSyncPattern.find(patternName);
+		if (iter == map_fileSyncPattern.end())
 			throw std::exception("No Such Pattern");
-		map_fileMappingPattern[iter.key()] = pattern;
+		map_fileSyncPattern[iter.key()] = pattern;
 		GlobalMessageRepost::Instance().sendNewMsg("Update Pattern[" + patternName + "]. ", 1);
 		return true;
 	}
@@ -64,8 +61,9 @@ bool FileMappingManager::updatePattern(QString patternName, FileMappingPattern& 
 		return false;
 	}
 }
-bool FileMappingManager::openRuleFile(QString filePath)
+bool FileSyncManager::openRuleFile(QString filePath)
 {
+	GlobalMessageRepost::Instance().sendNewMsg("openRuleFile()", 1);
 	try {
 		QJsonDocument doc;
 		if (!QJsonIO::readJsonFile(filePath, doc)) {
@@ -76,19 +74,17 @@ bool FileMappingManager::openRuleFile(QString filePath)
 		if (obj.contains("patternList"))
 		{
 			patternList= obj["patternList"].toArray();
-			QMap<QString, FileMappingPattern>patternMap;
+			QMap<QString, FileSyncPattern>patternMap;
 			for (auto iter = patternList.begin(); iter != patternList.end(); iter++) {
 				QJsonObject patternObj = iter->toObject();
-				FileMappingPattern pattern(patternObj);
+				FileSyncPattern pattern(patternObj);
 				patternMap.insert(pattern.name(), pattern);
 			}
-			std::lock_guard<std::mutex>locker(mutex_fileMappingPatern);
-			map_fileMappingPattern = patternMap;
+			map_fileSyncPattern = patternMap;
 		}
 		currentRuleFilePath = filePath;
 		GlobalSettings::Instance().latestRuleFilePath = filePath;
-		emit sig_fileMappingManager_ruleFileOpened();
-		emit sig_fileMappingManager_patternUpdated();
+		emit sig_fileSyncManager_ruleFileOpened();
 	}
 	catch (std::exception e) {
 		QString msg = "Fail Open File. ";
@@ -98,35 +94,37 @@ bool FileMappingManager::openRuleFile(QString filePath)
 	
 	return true;
 }
-void FileMappingManager::closeCurrRuleFile()
+void FileSyncManager::closeCurrRuleFile()
 {
-	std::lock_guard<std::mutex>locker(mutex_fileMappingPatern);
-	map_fileMappingPattern.clear();
+	map_fileSyncPattern.clear();
 	currentRuleFilePath.clear();
-	emit sig_fileMappingManager_patternUpdated();
+	emit sig_fileSyncManager_ruleFileClosed();
 }
-void FileMappingManager::printRuleFileToConsole()
+void FileSyncManager::printRuleFileToConsole()
 {
-	std::lock_guard<std::mutex>locker(mutex_fileMappingPatern);
 	QString stringOut;
-	for (auto iter = map_fileMappingPattern.begin(); iter != map_fileMappingPattern.end(); iter++) {
+	for (auto iter = map_fileSyncPattern.begin(); iter != map_fileSyncPattern.end(); iter++) {
 		stringOut+=iter->toConsoleString();
 	}
 	printf_s("\n");
 	printf_s(stringOut.toStdString().c_str());
 }
-QString FileMappingManager::getCurrentRuleFilePath()
+QString FileSyncManager::currRuleFilePath()
 {
 	return currentRuleFilePath;
 }
-bool FileMappingManager::saveRuleFile(QString filePath)
+QString FileSyncManager::getCurrentRuleFilePath()
 {
+	return currentRuleFilePath;
+}
+bool FileSyncManager::saveRuleFile(QString filePath)
+{
+	GlobalMessageRepost::Instance().sendNewMsg("saveRuleFile()",1);
 	try {
-		std::lock_guard<std::mutex>locker(mutex_fileMappingPatern);
 		QJsonDocument doc;
 		QJsonObject obj;
 		QJsonArray patternList;
-		for (auto iter = map_fileMappingPattern.begin(); iter != map_fileMappingPattern.end(); iter++) {
+		for (auto iter = map_fileSyncPattern.begin(); iter != map_fileSyncPattern.end(); iter++) {
 			patternList.append(iter->toJsonObj());
 		}
 		obj.insert("patternList", patternList);
@@ -140,7 +138,7 @@ bool FileMappingManager::saveRuleFile(QString filePath)
 		}
 		GlobalMessageRepost::Instance().sendNewMsg(msg);
 		currentRuleFilePath = filePath;
-		emit sig_fileMappingManager_ruleFileOpened();
+		emit sig_fileSyncManager_ruleFileOpened();
 		return true;
 	}
 	catch (std::exception e) {
@@ -150,34 +148,34 @@ bool FileMappingManager::saveRuleFile(QString filePath)
 	}
 }
 
-void FileMappingManager::rec_deletePattern(QString name)
+void FileSyncManager::rec_deletePattern(QString name)
 {
 	deletePattern(name);
 }
-void FileMappingManager::rec_applyPattern(QString  patternName)
+void FileSyncManager::rec_applyPattern(QString  patternName)
 {
 	applyPattern(patternName);
 }
-void FileMappingManager::rec_printPatternsToConsole()
+void FileSyncManager::rec_printPatternsToConsole()
 {
 	printRuleFileToConsole();
 }
-bool FileMappingManager::createNewPattern(QString patternName)
+bool FileSyncManager::createNewPattern(QString patternName)
 {
 	try {
 		if (patternName.isEmpty()) {
 			throw std::exception("Pattern Name is Empty");
 		}
-		auto iter = map_fileMappingPattern.find(patternName);
-		if (iter != map_fileMappingPattern.end()) {
+		auto iter = map_fileSyncPattern.find(patternName);
+		if (iter != map_fileSyncPattern.end()) {
 			throw std::exception("Pattern already Exist");
 		}
 		else {
-			map_fileMappingPattern[patternName] = FileMappingPattern(patternName);
+			map_fileSyncPattern[patternName] = FileSyncPattern(patternName);
 		}
 		QString msg = "Create New Pattern [" + patternName + "].";
 		GlobalMessageRepost::Instance().sendNewMsg(msg, GlobalMessageRepost::MsgDst::MainWindowUserMsgBrowser);
-		emit sig_fileMappingManager_patternUpdated();
+		emit sig_fileSyncManager_patternUpdated();
 		return true;
 	}
 	catch (std::exception e) {
@@ -187,21 +185,21 @@ bool FileMappingManager::createNewPattern(QString patternName)
 	}
 }
 
-bool FileMappingManager::deletePattern(QString patternName)
+bool FileSyncManager::deletePattern(QString patternName)
 {
 	try {
 		if (patternName.isEmpty()) {
 			throw std::exception("Pattern Name is Empty");
 		}
-		if (!map_fileMappingPattern.contains(patternName)) {
+		if (!map_fileSyncPattern.contains(patternName)) {
 			throw std::exception("Pattern already Exist");
 		}
 		else {
-			map_fileMappingPattern.remove(patternName);
+			map_fileSyncPattern.remove(patternName);
 		}
 		QString msg = "Delete Pattern [" + patternName + "].";
 		GlobalMessageRepost::Instance().sendNewMsg(msg, GlobalMessageRepost::MsgDst::MainWindowUserMsgBrowser);
-		emit sig_fileMappingManager_patternUpdated();
+		emit sig_fileSyncManager_patternUpdated();
 		return true;
 	}
 	catch (std::exception e) {
@@ -210,25 +208,25 @@ bool FileMappingManager::deletePattern(QString patternName)
 		return false;
 	}
 }
-bool FileMappingManager::applyPattern(QString)
+bool FileSyncManager::applyPattern(QString)
 {
 	return false;
 }
 
-void FileMappingManager::rec_openRuleFile(QString path) {
+void FileSyncManager::rec_openRuleFile(QString path) {
 	openRuleFile(path);
 }
 
-void FileMappingManager::rec_closeCurrRuleFile()
+void FileSyncManager::rec_closeCurrRuleFile()
 {
 	closeCurrRuleFile();
 }
 
-void FileMappingManager::rec_saveRuleFile(QString path)
+void FileSyncManager::rec_saveRuleFile(QString path)
 {
 	saveRuleFile(path);
 }
 
-void FileMappingManager::rec_createNewPattern(QString patternName) {
+void FileSyncManager::rec_createNewPattern(QString patternName) {
 	createNewPattern(patternName);
 }

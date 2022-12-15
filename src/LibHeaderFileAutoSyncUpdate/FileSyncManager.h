@@ -4,21 +4,22 @@
 #include <QStringList>
 #include <memory>
 #include <mutex>
-#include "FileMappingPattern.h"
-class FileMappingManager:public QObject
+#include "FileSyncPattern.h"
+class FileSyncManager:public QObject
 {
 	Q_OBJECT
 public:
-	static FileMappingManager& Instance();
-	~FileMappingManager();
+	static FileSyncManager& Instance();
+	~FileSyncManager();
 	[[nodisacard]]QString newPatternNameSuggestion();
-	bool getPattern(QString PatternName,FileMappingPattern&);
+	bool getPattern(QString PatternName,FileSyncPattern&);
 	QStringList getPatternNames();
-	bool updatePattern(QString PatternName,FileMappingPattern &Pattern);
+	bool updatePattern(QString PatternName,FileSyncPattern &Pattern);
 	bool saveRuleFile(QString filePath);
 	bool openRuleFile(QString filePath);
 	void closeCurrRuleFile();
 	void printRuleFileToConsole();
+	QString currRuleFilePath();
 	QString getCurrentRuleFilePath();
 public slots:
 	void rec_openRuleFile(QString);
@@ -29,16 +30,16 @@ public slots:
 	void rec_applyPattern(QString);
 	void rec_printPatternsToConsole();
 signals:
-	void sig_fileMappingManager_patternUpdated();
-	void sig_fileMappingManager_ruleFileOpened();
+	void sig_fileSyncManager_patternUpdated();
+	void sig_fileSyncManager_ruleFileOpened();
+	void sig_fileSyncManager_ruleFileClosed();
 protected:
 private:
-	FileMappingManager();
+	FileSyncManager();
 	bool createNewPattern(QString);
 	bool deletePattern(QString);
 	bool applyPattern(QString);
 private:
-	QMap<QString, FileMappingPattern>map_fileMappingPattern;
-	std::mutex mutex_fileMappingPatern;
+	QMap<QString, FileSyncPattern>map_fileSyncPattern;
 	QString currentRuleFilePath;
 };

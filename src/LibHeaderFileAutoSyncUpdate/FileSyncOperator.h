@@ -2,18 +2,18 @@
 #include <QString>
 #include <QList>
 #include <queue>
-#include "FileMappingRule.h"
+#include "FileSyncRule.h"
 #include <Thread>
 #include <memory>
 #include <mutex>
 #include <atomic>
 #include "CustomCppToolKit/MultiThreadQueue.h"
-class FileMappingOperator
+class FileSyncOperator
 {
 public:
-	static FileMappingOperator& Instance();
-	~FileMappingOperator();
-	std::unique_ptr<MultiThreadQueue<FileMappingRule> >ruleQueue;
+	static FileSyncOperator& Instance();
+	~FileSyncOperator();
+	std::unique_ptr<MultiThreadQueue<FileSyncRule> >ruleQueue;
 	void threadLoopRun();
 	std::atomic<bool> threadIsInterrupted;
 private:
@@ -29,14 +29,14 @@ private:
 		quint64 fileByteSize = 0;
 	};
 	static void ruleOpLoop();
-	void applyRule(FileMappingRule rule);
+	void applyRule(FileSyncRule rule);
 	void convertPathValueIntoFileInfo(QStringList files,QMap<QString, CustomFileInfo>&fileInfoMap);
 	void findAllFilesUnderFolder(QString folderPath, QMap<QString, CustomFileInfo>& fileInfoMap);
 	QString smallFileMd5(QString path);
 	QString bigFileMd5(QString path);
 	void regexCheck(QMap<QString, CustomFileInfo>& map,QStringList regexList);
 	bool copyFile(QString srcPath, QString dstPath, bool coverFileIfExist);
-	FileMappingOperator();
+	FileSyncOperator();
 	std::thread m_thread ;
 };
 

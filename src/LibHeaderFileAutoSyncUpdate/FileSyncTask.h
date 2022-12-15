@@ -1,15 +1,15 @@
 #pragma once
 #include <QString>
 #include <QJsonObject>
-class FileMappingTask
+class FileSyncTask
 {
 public:
-	FileMappingTask();
-	FileMappingTask(QJsonObject obj);
-	~FileMappingTask()=default;
-	FileMappingTask(const FileMappingTask&);
-	FileMappingTask(FileMappingTask&&)noexcept;
-	FileMappingTask& operator=(const FileMappingTask&);
+	FileSyncTask();
+	FileSyncTask(QJsonObject obj);
+	~FileSyncTask()=default;
+	FileSyncTask(const FileSyncTask&);
+	FileSyncTask(FileSyncTask&&)noexcept;
+	FileSyncTask& operator=(const FileSyncTask&);
 	QString name();
 	void setName(QString name);
 	QString script();
