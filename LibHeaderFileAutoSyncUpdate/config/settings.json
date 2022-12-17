@@ -1,5 +1,6 @@
 {
     "userItems": {
-        "latestRuleFilePath": "D:/ProgramProject/VSProject/QtDesktopApplicationCluster/LibHeaderFileAutoSyncUpdate/TestRule.syncrule"
+        "absoluteLatestRuleFilePath": "D:/Flora/VSProject/QtDesktopApplicationCluster/LibHeaderFileAutoSyncUpdate/TestRule.syncrule",
+        "reletiveLatestRuleFilePath": "TestRule.syncrule"
     }
 }

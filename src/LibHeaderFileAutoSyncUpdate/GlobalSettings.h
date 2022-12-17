@@ -14,7 +14,8 @@ public:
 	void readSettingFile();
 public:
 	std::mutex mutex_settingItem;
-	QString latestRuleFilePath;
+	QString reletiveLatestRuleFilePath;
+	QString absoluteLatestRuleFilePath;
 private:
 	GlobalSettings();
 	QThread thread_globalSettings;

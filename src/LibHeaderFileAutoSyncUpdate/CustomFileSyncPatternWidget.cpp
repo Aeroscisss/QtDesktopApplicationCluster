@@ -8,7 +8,7 @@ CustomFileSyncPatternWidget::CustomFileSyncPatternWidget(FileSyncPattern& patter
 	//创建计时器
 	updateTimer = new QTimer(this);
 	connect(updateTimer, &QTimer::timeout, this, &CustomFileSyncPatternWidget::rec_timerForcedUpdatePattern);
-	updateTimer->setInterval(1000);
+	updateTimer->setInterval(300);
 	//初始化widget
 	initWidget();
 }
@@ -18,35 +18,30 @@ CustomFileSyncPatternWidget::~CustomFileSyncPatternWidget()
 }
 void CustomFileSyncPatternWidget::initWidget()
 {
-	//GlobalMessageRepost::Instance().sendNewMsg("debug", 1);
-	//QTime time;
-	//time.start();
-	//设置patternName显示
 	ui.label_patternName->setText(m_pattern.name().isEmpty()?"Pattern Name Empty": m_pattern.name());
-	//qDebug() << time.elapsed() << endl;
-	//清空taskWidgetList
 	std::lock_guard<std::mutex>locker(mutex_taskWidgets);
 	for (auto iter = taskWidgetList.begin(); iter != taskWidgetList.end(); iter++) {
 		(*iter)->deleteLater();
 	}
 	taskWidgetList.clear();
-	//qDebug() << time.elapsed() << endl;
-	//emplace new taskWidgetList
 	auto taskList = m_pattern.getTaskList();
 	int i = 0;
 	for (auto iter = taskList.begin(); iter != taskList.end(); ++iter) {
-		CustomFileSyncTaskWidget* taskWidget = new CustomFileSyncTaskWidget(*iter,i);
-		connect(taskWidget, &CustomFileSyncTaskWidget::sig_taskWidget_taskChanged,
-			this, &CustomFileSyncPatternWidget::rec_updateTask);
-		connect(taskWidget, &CustomFileSyncTaskWidget::sig_taskWidget_requestDelete,
-			this, &CustomFileSyncPatternWidget::rec_deleteTask);
-		taskWidgetList.append(taskWidget);
-		ui.gridLayout_tasks->addWidget(taskWidget);
-		taskWidget->setTaskMarkNum(i + 1);
+		createNewTaskWidget(*iter, i + 1);
 		i++;
 	}
 	updateTaskAmountCounter();
-	//qDebug() << time.elapsed() << endl;
+}
+void CustomFileSyncPatternWidget::createNewTaskWidget(FileSyncTask task, int index)
+{
+	CustomFileSyncTaskWidget* taskWidget = new CustomFileSyncTaskWidget(task, index);
+	connect(taskWidget, &CustomFileSyncTaskWidget::sig_taskWidget_taskChanged,
+		this, &CustomFileSyncPatternWidget::rec_updateTask);
+	connect(taskWidget, &CustomFileSyncTaskWidget::sig_taskWidget_requestDelete,
+		this, &CustomFileSyncPatternWidget::rec_deleteTask);
+	taskWidgetList.append(taskWidget);
+	ui.gridLayout_tasks->addWidget(taskWidget);
+	taskWidget->setTaskMarkNum(index);
 }
 void CustomFileSyncPatternWidget::updatePattern()
 {
@@ -94,5 +89,6 @@ void CustomFileSyncPatternWidget::rec_timerForcedUpdatePattern()
 void CustomFileSyncPatternWidget::on_btn_addTask_clicked()
 {
 	m_pattern.addTask(FileSyncTask());
-	initWidget();
+	createNewTaskWidget(FileSyncTask(), taskWidgetList.size()+1);
+	updateTaskAmountCounter();
 }

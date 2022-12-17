@@ -18,6 +18,7 @@ public:
 	void updatePattern();
 private:
 	void initWidget();
+	void createNewTaskWidget(FileSyncTask task,int index);
 	void updateTaskAmountCounter();
 	Ui::CustomFileSyncPatternWidgetClass ui;
 	FileSyncPattern m_pattern;

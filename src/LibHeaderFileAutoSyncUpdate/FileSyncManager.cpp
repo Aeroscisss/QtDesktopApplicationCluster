@@ -5,6 +5,8 @@
 #include <QJsonArray>
 #include "CustomQToolKit/QJsonIO.h"
 #include "GlobalSettings.h"
+#include <QDir>
+#include <QCoreApplication>
 FileSyncManager& FileSyncManager::Instance() {
 	static std::unique_ptr<FileSyncManager>instance_ptr =
 		std::unique_ptr<FileSyncManager>(new FileSyncManager);
@@ -67,7 +69,7 @@ bool FileSyncManager::openRuleFile(QString filePath)
 	try {
 		QJsonDocument doc;
 		if (!QJsonIO::readJsonFile(filePath, doc)) {
-			throw std::exception("Corrupted File. ");
+			throw std::exception("Json file not valid. ");
 		}
 		QJsonObject obj = doc.object();
 		QJsonArray patternList;
@@ -83,7 +85,10 @@ bool FileSyncManager::openRuleFile(QString filePath)
 			map_fileSyncPattern = patternMap;
 		}
 		currentRuleFilePath = filePath;
-		GlobalSettings::Instance().latestRuleFilePath = filePath;
+		GlobalSettings::Instance().absoluteLatestRuleFilePath = QDir(filePath).absolutePath();
+		QString currDir = QDir::currentPath();
+		QDir dir(currDir);
+		GlobalSettings::Instance().reletiveLatestRuleFilePath = dir.relativeFilePath(GlobalSettings::Instance().absoluteLatestRuleFilePath);
 		emit sig_fileSyncManager_ruleFileOpened();
 	}
 	catch (std::exception e) {
@@ -132,7 +137,7 @@ bool FileSyncManager::saveRuleFile(QString filePath)
 		if (!QJsonIO::writeJsonFile(filePath, doc)) {
 			throw std::exception(QString("Unable to write file\n×["+filePath+"]").toStdString().c_str());
 		}
-		QString msg = "File Saved.";
+		QString msg = "File Saved Success.";
 		if (currentRuleFilePath != filePath) {
 			msg += "\nFile Path [" + filePath + "]";
 		}

@@ -34,7 +34,8 @@ void GlobalSettings::outputSettingFile()
 	QJsonObject userItems;
 	QJsonObject enternalItems;
 	QJsonObject devItems;
-	userItems.insert("latestRuleFilePath", latestRuleFilePath);
+	userItems.insert("reletiveLatestRuleFilePath", reletiveLatestRuleFilePath);
+	userItems.insert("absoluteLatestRuleFilePath", absoluteLatestRuleFilePath);
 	settingItems["userItems"]=userItems;
 	doc.setObject(settingItems);
 	QJsonIO::writeJsonFile("./config/settings.json",doc);
@@ -48,8 +49,11 @@ void GlobalSettings::readSettingFile()
 	if (settingItems.contains("userItems")) {
 		QJsonObject userItems=settingItems["userItems"].toObject();
 		std::lock_guard<std::mutex>locer(mutex_settingItem);
-		if (userItems.contains("latestRuleFilePath")) {
-			latestRuleFilePath = userItems["latestRuleFilePath"].toString();
+		if (userItems.contains("reletiveLatestRuleFilePath")) {
+			reletiveLatestRuleFilePath = userItems["reletiveLatestRuleFilePath"].toString();
+		}
+		if (userItems.contains("absoluteLatestRuleFilePath")) {
+			absoluteLatestRuleFilePath = userItems["absoluteLatestRuleFilePath"].toString();
 		}
 	}
 	//QJsonObject enternalItems;

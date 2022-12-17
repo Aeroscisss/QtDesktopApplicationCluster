@@ -49,8 +49,8 @@ bool CustomQApp::release()
 void CustomQApp::showIntroWindow()
 {
 	appUi.mainWindow->show();
-	if (!GlobalSettings::Instance().latestRuleFilePath.isEmpty()) {
-		appModule.fileSyncManager->openRuleFile(GlobalSettings::Instance().latestRuleFilePath);
+	if (!appModule.fileSyncManager->openRuleFile(GlobalSettings::Instance().reletiveLatestRuleFilePath)) {
+		appModule.fileSyncManager->openRuleFile(GlobalSettings::Instance().absoluteLatestRuleFilePath);
 	}
 }
 
