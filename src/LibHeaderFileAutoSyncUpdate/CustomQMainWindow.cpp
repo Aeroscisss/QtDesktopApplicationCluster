@@ -77,7 +77,6 @@ void CustomQMainWindow::rec_updateTitle()
 }
 void CustomQMainWindow::connectSigs()
 {
-	GlobalMessageRepost::Instance().sendNewMsg("CustomQMainWindow::connectSigs()", 1);
 	connect(&GlobalMessageRepost::Instance(), SIGNAL(sig_globalMessageRepost_mainWindowUserMsgBrowser(QString)),
 		msgBrowser, SLOT(rec_appendMsg(QString)));
 	
@@ -106,6 +105,8 @@ void CustomQMainWindow::connectSigs()
 		&FileSyncManager::Instance(), SLOT(rec_deletePattern(QString)));
 	connect(this, SIGNAL(sig_requestPrintPatternsToConsole()),
 		&FileSyncManager::Instance(), SLOT(rec_printPatternsToConsole()));
+
+	GlobalMessageRepost::Instance().sendNewMsg("CustomQMainWindow::Signal Connected", 1);
 	
 }
 void CustomQMainWindow::refreshPatternComboBox()
