@@ -45,14 +45,8 @@
     <Filter Include="Header Files\CustomQWidget\FileMapping">
       <UniqueIdentifier>{89b8fe0f-2de0-4587-ad58-a7b813a911c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ToolKit">
-      <UniqueIdentifier>{d67bb364-0955-45a2-aa92-be00bcffcd38}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\ToolKit">
       <UniqueIdentifier>{0f0a7393-898d-4ea4-993b-63a297945786}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CppToolKit">
-      <UniqueIdentifier>{34a4d457-efc1-4cee-8927-1e3b8e9285dc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\AbstractLayer">
       <UniqueIdentifier>{ae4bcbfb-9c29-4522-9ff0-d80d242e8903}</UniqueIdentifier>
@@ -60,11 +54,12 @@
     <Filter Include="Source Files\CustomQWidget\Window">
       <UniqueIdentifier>{0468cb4d-63d6-48f4-b357-9edd2a98cad9}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <QtRcc Include="resource.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
+    <Filter Include="Header Files\CppToolKit">
+      <UniqueIdentifier>{34a4d457-efc1-4cee-8927-1e3b8e9285dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ToolKit">
+      <UniqueIdentifier>{d67bb364-0955-45a2-aa92-be00bcffcd38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\LibHeaderFileAutoSyncUpdate\main.cpp">
@@ -191,10 +186,23 @@
       <Filter>Header Files\Module\FileMapping</Filter>
     </ClInclude>
     <ClInclude Include="..\src\CustomQToolKit\QJsonIO.h">
-      <Filter>ToolKit</Filter>
+      <Filter>Header Files\ToolKit</Filter>
     </ClInclude>
     <ClInclude Include="..\src\CustomCppToolKit\MultiThreadQueue.h">
-      <Filter>CppToolKit</Filter>
+      <Filter>Header Files\CppToolKit</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="FileSyncTool.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="resource.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
   </ItemGroup>
 </Project>

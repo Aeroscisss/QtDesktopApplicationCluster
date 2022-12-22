@@ -10,10 +10,6 @@
                 {
                     "rawScript": "from:{\"./testFile/src2\"}\nto:{\"./testFile/dst2\"}\nfilter:{\".h\",\".cpp\"}",
                     "taskName": "P1T2"
-                },
-                {
-                    "rawScript": "",
-                    "taskName": ""
                 }
             ]
         }
