@@ -2,9 +2,9 @@
 #include "ImprovedThreadControl.h"
 #include <QObject>
 #include <QThread>
+#include <QDebug>
 #include <memory>
 #include <thread>  
-#include "PiCore/PiStandaloneReport.h"
 
 ImprovedThreadBase::ThreadState ImprovedThreadControl::threadState(ImprovedThreadBase& thread)
 {
@@ -26,7 +26,13 @@ void ImprovedThreadControl::startThread(ImprovedThreadBase& base)
 	if (!base.thread.isRunning()) {
 		base.thread.start();
 		base.stopFlag = false;
-		Pi::PiStandaloneReport::traceReport("ImprovedThreadControl", std::string("started thread Name[") + base.name().toStdString() + "], Thread ID = [" + std::to_string(reinterpret_cast<uintptr_t>(base.thread.currentThreadId())) + "]");
+		QString msg;
+		msg += "[ImprovedThreadControl]:"
+			+QString("started thread Name[")
+			+ base.name()+"], Thread ID = ["
+			+ QString::fromStdString(std::to_string(reinterpret_cast<uintptr_t>(base.thread.currentThreadId()))) 
+			+QString("]") ;
+		qDebug() << msg;
 	}
 }
 
@@ -34,7 +40,12 @@ void ImprovedThreadControl::pauseThread(ImprovedThreadBase& base)
 {
 	if (base.thread.isRunning()) {
 		base.pauseFlag = true;
-		Pi::PiStandaloneReport::traceReport("ImprovedThreadControl", std::string("paused thread Name[") + base.name().toStdString() + "], Thread ID = [" + std::to_string(reinterpret_cast<uintptr_t>(base.thread.currentThreadId())) + "]");
+		QString msg;
+		msg += "[ImprovedThreadControl]:"
+			+ QString("pause thread Name[")
+			+ base.name() + "], Thread ID = ["
+			+ QString::fromStdString(std::to_string(reinterpret_cast<uintptr_t>(base.thread.currentThreadId())) + "]");
+			qDebug() << msg;
 	}
 }
 
@@ -43,7 +54,12 @@ void ImprovedThreadControl::resumeThread(ImprovedThreadBase& base)
 	if (base.thread.isRunning()) {
 		base.pauseFlag = false;
 		base.cond_pauseThread.wakeAll();
-		Pi::PiStandaloneReport::traceReport("ImprovedThreadControl", std::string("resume thread Name[") + base.name().toStdString() + "], Thread ID = [" + std::to_string(reinterpret_cast<uintptr_t>(base.thread.currentThreadId())) + "]");
+		QString msg;
+		msg += "[ImprovedThreadControl]:"
+			+ QString("resume thread Name[")
+			+ base.name() + "], Thread ID = ["
+			+ QString::fromStdString(std::to_string(reinterpret_cast<uintptr_t>(base.thread.currentThreadId())) + "]");
+			qDebug() << msg;
 	}
 }
 
@@ -55,6 +71,11 @@ void ImprovedThreadControl::stopThread(ImprovedThreadBase& base)
 		base.cond_pauseThread.wakeAll();
 		base.thread.quit();
 		base.thread.wait();
-		Pi::PiStandaloneReport::traceReport("ImprovedThreadControl", std::string("stoped thread Name[") + base.name().toStdString() + "], Thread ID = [" + std::to_string(reinterpret_cast<uintptr_t>(base.thread.currentThreadId())) + "]");
+		QString msg;
+		msg += "[ImprovedThreadControl]:"
+			+ QString("stop thread Name[")
+			+ base.name() + "], Thread ID = ["
+			+ QString::fromStdString(std::to_string(reinterpret_cast<uintptr_t>(base.thread.currentThreadId())) + "]");
+			qDebug() << msg;
 	}
 }

@@ -43,8 +43,8 @@ void CustomQMainWindow::rec_resetPatterns() {
 }
 
 void CustomQMainWindow::rec_refreshPatterns() {
-	QString str = static_cast<QString>(this->sender()->objectName());
-	GlobalMessageRepost::Instance().sendNewMsg("refreshPatterns sender "+ str, 1);
+	//QString str = static_cast<QString>(this->sender()->objectName());
+	//GlobalMessageRepost::Instance().sendNewMsg("refreshPatterns sender "+ str, 1);
 	refreshPatternComboBox();
 	refreshPatternContents();
 }
@@ -120,28 +120,24 @@ void CustomQMainWindow::refreshPatternComboBox()
 }
 void CustomQMainWindow::refreshPatternContents()
 {
-	//GlobalMessageRepost::Instance().sendNewMsg("refreshPatternContents", 1);
-	if (currentPatternWidget != nullptr) {
-		currentPatternWidget->updatePattern();//更新当前的Pattern
-	}
+	GlobalMessageRepost::Instance().sendNewMsg("refreshPatternContents", 1 );
 	QString patternName = ui.comboBox_paternSelect->currentText();
 	QString patternIndex = ui.comboBox_paternSelect->currentIndex();
 	try {
 		FileSyncPattern  pattern;
 		if (!FileSyncManager::Instance().getPattern(patternName, pattern))//获取当前patternName
 			throw std::exception("Can not Find Such Pattern. ");
-		CustomFileSyncPatternWidget* patternWidget=nullptr;
 		auto iter = map_patternWidget.find(patternName);
 		if (iter==map_patternWidget.end()) {//不存在
-			patternWidget= new CustomFileSyncPatternWidget(pattern, this);
-			map_patternWidget.insert(patternName, patternWidget);
-			stackedWidget_pattern->addWidget(patternWidget);
+			currentPatternWidget = new CustomFileSyncPatternWidget(pattern, this);
+			currentPatternWidget->setObjectName(patternName);
+			map_patternWidget.insert(patternName, currentPatternWidget);
+			stackedWidget_pattern->addWidget(currentPatternWidget);
 		}
 		else {
-			patternWidget = iter.value();
+			currentPatternWidget = iter.value();
 		}
-		stackedWidget_pattern->setCurrentWidget(patternWidget);
-		currentPatternWidget = patternWidget;
+		stackedWidget_pattern->setCurrentWidget(currentPatternWidget);
 	}
 	catch (std::exception e) {
 		QString errMsg = QString::fromStdString(e.what())+"Pattern Name:["+patternName+"]";
@@ -155,8 +151,12 @@ void CustomQMainWindow::on_action_delCurrPattern_triggered()
 	QString msg = tr("Delete Current Pattern [") + currPatternName + "] ?";
 	int result =
 		QMessageBox::question(this, tr("Delete?"), msg, QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
-	if (result == QMessageBox::Yes)
-	{
+	if (result == QMessageBox::Yes){
+		map_patternWidget.remove(currPatternName);
+		if (currentPatternWidget != nullptr) {
+			currentPatternWidget->deleteLater();
+			currentPatternWidget = nullptr;
+		}
 		emit sig_requestDeletePattern(currPatternName);
 	}
 }
@@ -228,7 +228,13 @@ void CustomQMainWindow::on_action_close_triggered()
 void CustomQMainWindow::on_action_createNewPattern_triggered() {
 	bool ok=false;
 	//输入名字
-	QString string = QInputDialog::getText(this, tr("Input"), tr("Input pattern name:"), QLineEdit::Normal, FileSyncManager::Instance().newPatternNameSuggestion(), &ok, Qt::WindowCloseButtonHint);
+	QString string = QInputDialog::getText(this,
+		tr("Input"),
+		tr("Input pattern name:"),
+		QLineEdit::Normal,
+		FileSyncManager::Instance().newPatternNameSuggestion(),
+		&ok
+	);
 	if (ok) {
 		emit sig_requestCreateNewPattern(string);
 	}

@@ -13,12 +13,13 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QString>
-class QJsonIO
+class QJsonIO:public QObject
 {
 public:
 	//实例公用Json接口
-	static bool readJsonFile(QString filePath,QJsonDocument &doc);
-	static bool convertJsonDocToObj(QJsonDocument doc, QJsonObject& obj);
-	static bool writeJsonFile(QString filePath, QJsonDocument file);
+	bool readJsonFile(QString filePath,QJsonDocument &doc);
+	bool convertJsonDocToObj(QJsonDocument doc, QJsonObject& obj);
+	bool writeJsonFile(QString filePath, QJsonDocument file);
+	QString errorMsg;
 };
 #endif

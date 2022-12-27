@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QWidget>
-#include "CustomQObject\CustomAbstractQWidget.h"
+#include "CustomQObject/CustomAbstractQWidget.h"
 #include "FileSyncTask.h"
 #include "FileSyncRule.h"
 #include "ui_CustomFileSyncTaskWidget.h"
@@ -14,7 +14,7 @@ class CustomFileSyncTaskWidget : public CustomAbstractQWidget
 public:
 	explicit CustomFileSyncTaskWidget(FileSyncTask task,int taskNum,QWidget *parent = nullptr);
 	~CustomFileSyncTaskWidget();
-	FileSyncTask getTask();
+	FileSyncTask task;
 	void setTaskMarkNum(int num);
 	int taskMarkNum();
 signals:

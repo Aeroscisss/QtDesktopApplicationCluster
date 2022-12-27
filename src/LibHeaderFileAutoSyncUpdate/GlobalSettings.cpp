@@ -1,4 +1,5 @@
 #include "GlobalSettings.h"
+#include "GlobalMessageRepost.h"
 #include <memory>
 #include <iostream>
 #include <CustomQToolKit/QJsonIO.h>
@@ -29,6 +30,7 @@ GlobalSettings::~GlobalSettings()
 
 void GlobalSettings::outputSettingFile()
 {
+	QJsonIO jsonIo;
 	QJsonDocument doc;
 	QJsonObject settingItems;
 	QJsonObject userItems;
@@ -38,13 +40,19 @@ void GlobalSettings::outputSettingFile()
 	userItems.insert("absoluteLatestRuleFilePath", absoluteLatestRuleFilePath);
 	settingItems["userItems"]=userItems;
 	doc.setObject(settingItems);
-	QJsonIO::writeJsonFile("./config/settings.json",doc);
+	if (!jsonIo.writeJsonFile("./config/settings.json", doc)) {
+		GlobalMessageRepost::Instance().sendNewMsg("Fail Output Setting File",1|2);
+	}
 }
 
 void GlobalSettings::readSettingFile()
 {
+	QJsonIO jsonIo;
 	QJsonDocument doc;
-	QJsonIO::readJsonFile("./config/settings.json", doc);
+	if (!jsonIo.readJsonFile("./config/settings.json", doc)) {
+		GlobalMessageRepost::Instance().sendNewMsg("Fail Reading Setting File", 1 | 2);
+		return;
+	}
 	QJsonObject settingItems = doc.object();
 	if (settingItems.contains("userItems")) {
 		QJsonObject userItems=settingItems["userItems"].toObject();

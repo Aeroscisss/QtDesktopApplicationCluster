@@ -5,6 +5,8 @@
 #include "GlobalMessageRepost.h"
 #include "FileSyncManager.h"
 #include "FileSyncOperator.h"
+#include "CustomQToolKit/ImprovedThreadControl.h"
+#include <QDesktopWidget>
 struct CustomAbstractQApp::AppModule
 {
 	GlobalSettings* globalSettings = nullptr;
@@ -43,12 +45,27 @@ bool CustomQApp::release()
 {
 	appModule.fileSyncOperator->threadIsInterrupted = true;
 	appModule.globalSettings->outputSettingFile();
+	ImprovedThreadControl::stopThread(appModule.fileSyncManager->m_thread);
 	return true;
 }
 
 void CustomQApp::showIntroWindow()
 {
+	QDesktopWidget w;
+
+	int deskWidth = w.width();
+	int deskHeight = w.height();
+	//qDebug() << deskWidth;
+	//qDebug() << deskHeight;
+
+	float startX = (float)deskWidth * 0.35f;
+	float startY= (float)deskWidth * 0.1f;
+	float width = (float)deskWidth * 0.3f;
+	float height = (float)deskHeight * 0.6f;
+
+	appUi.mainWindow->setGeometry(QRect(startX,startY,width,height));
 	appUi.mainWindow->show();
+
 	if (!appModule.fileSyncManager->openRuleFile(GlobalSettings::Instance().reletiveLatestRuleFilePath)) {
 		appModule.fileSyncManager->openRuleFile(GlobalSettings::Instance().absoluteLatestRuleFilePath);
 	}

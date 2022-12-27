@@ -19,7 +19,7 @@ CustomFileSyncPatternWidget::~CustomFileSyncPatternWidget()
 void CustomFileSyncPatternWidget::initWidget()
 {
 	ui.label_patternName->setText(m_pattern.name().isEmpty()?"Pattern Name Empty": m_pattern.name());
-	std::lock_guard<std::mutex>locker(mutex_taskWidgets);
+	//std::lock_guard<std::mutex>locker(mutex_taskWidgets);
 	for (auto iter = taskWidgetList.begin(); iter != taskWidgetList.end(); iter++) {
 		(*iter)->deleteLater();
 	}
@@ -46,12 +46,14 @@ void CustomFileSyncPatternWidget::createNewTaskWidget(FileSyncTask task, int ind
 void CustomFileSyncPatternWidget::updatePattern()
 {
 	QList<FileSyncTask>taskList;
-	std::lock_guard<std::mutex>locker(mutex_taskWidgets);
-	for (auto iter : taskWidgetList) {
-		FileSyncTask task = iter->getTask();
-		taskList.append(task);
+	{
+		//std::lock_guard<std::mutex>locker(mutex_taskWidgets);
+		for (auto iter : taskWidgetList) {
+			FileSyncTask task = iter->task;
+			taskList.append(task);
+		}
+		m_pattern.updateTaskList(taskList);
 	}
-	m_pattern.updateTaskList(taskList);
 	FileSyncManager::Instance().updatePattern(m_pattern.name(), m_pattern);
 }
 void CustomFileSyncPatternWidget::updateTaskAmountCounter()
@@ -60,7 +62,7 @@ void CustomFileSyncPatternWidget::updateTaskAmountCounter()
 }
 void CustomFileSyncPatternWidget::rec_updateTask(){
 	//接受到task已经更新信号，启动更新标志，开始计时器
-	taskChanged = true;//task更新标志
+	taskChanged = true;//task 更新标志
 	updateTimer->start();//开始计时
 }
 void CustomFileSyncPatternWidget::rec_deleteTask()

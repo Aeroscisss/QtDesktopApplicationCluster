@@ -23,7 +23,7 @@ private:
 	Ui::CustomFileSyncPatternWidgetClass ui;
 	FileSyncPattern m_pattern;
 
-	std::mutex mutex_taskWidgets;
+	//std::mutex mutex_taskWidgets;
 	QList<CustomFileSyncTaskWidget*>taskWidgetList;
 
 	QTimer *updateTimer;

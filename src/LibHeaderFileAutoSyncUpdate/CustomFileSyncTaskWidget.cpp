@@ -16,12 +16,6 @@ CustomFileSyncTaskWidget::CustomFileSyncTaskWidget(FileSyncTask task, int taskNu
 CustomFileSyncTaskWidget::~CustomFileSyncTaskWidget()
 {
 }
-FileSyncTask CustomFileSyncTaskWidget::getTask(){
-	FileSyncTask task;
-	task.setName(label_taskName->text());
-	task.setScript(ui.textEdit_taskScript->toPlainText());
-	return task;
-}
 void CustomFileSyncTaskWidget::setTaskMarkNum(int num){
 	ui.lcdNumber->display(num);
 }
@@ -30,6 +24,8 @@ int CustomFileSyncTaskWidget::taskMarkNum()
 	return m_taskNum;
 }
 void CustomFileSyncTaskWidget::rec_updateTask() {
+	task.setName(label_taskName->text());
+	task.setScript(ui.textEdit_taskScript->toPlainText());
 	emit sig_taskWidget_taskChanged();
 }
 void CustomFileSyncTaskWidget::on_btn_delTask_clicked() {

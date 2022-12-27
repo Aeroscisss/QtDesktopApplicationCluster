@@ -105,6 +105,7 @@
     <ClCompile Include="..\src\CustomQObject\CustomAbstractQApp.cpp" />
     <ClCompile Include="..\src\CustomQObject\CustomAbstractQMainWindow.cpp" />
     <ClCompile Include="..\src\CustomQObject\CustomAbstractQWidget.cpp" />
+    <ClCompile Include="..\src\CustomQToolKit\ImprovedThreadControl.cpp" />
     <ClCompile Include="..\src\CustomQToolKit\QJsonIO.cpp" />
     <ClCompile Include="..\src\CustomQWidget\assembledQWidget\CustomQLabelEdit.cpp" />
     <ClCompile Include="..\src\CustomQWidget\CustomMsgBrowserWidget.cpp" />
@@ -152,6 +153,8 @@
     <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\FileSyncManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\CustomQToolKit\ImprovedThreadBase.h" />
+    <ClInclude Include="..\src\CustomQToolKit\ImprovedThreadControl.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\GlobalSettings.h" />
     <QtMoc Include="..\src\LibHeaderFileAutoSyncUpdate\CustomFileSyncPatternWidget.h" />
